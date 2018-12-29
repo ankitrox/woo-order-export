@@ -1,0 +1,42 @@
+<?php
+/**
+ * Plugin Name: Order Export - WooCommerce
+ * Plugin URI: http://sharethingz.com/
+ * Description: A WooCommerce plugin to export order related information in csv format.
+ * Version: 3.0.0
+ * Author: Ankit Gade
+ * Author URI: https://sharethingz.com/
+ * Text Domain: woooe
+ * Domain Path: /i18n/languages/
+ *
+ * @package WooCommerce
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+if( !defined( 'WOOOE_BASE' ) ){
+    define( 'WOOOE_BASE', dirname(__FILE__) );
+}
+
+if( !defined( 'WOOOE_BASE_FILE' ) ){
+    define( 'WOOOE_BASE_FILE', __FILE__ );
+}
+
+if( !defined( 'WOOOE_BASE_URL' ) ){
+    define( 'WOOOE_BASE_URL', plugins_url( basename( dirname(__FILE__) ) ) );
+}
+
+//Include main class
+if( !class_exists('WOOOE') ) {
+    include_once dirname( __FILE__ ) . '/classes/class-woooe.php';
+}
+
+function _WOOE(){
+    return WOOOE::instance();
+}
+
+$GLOBALS['woooe'] = _WOOE();
+
+register_activation_hook( __FILE__, array('WOOOE_File_Handler', 'create_folder') );
