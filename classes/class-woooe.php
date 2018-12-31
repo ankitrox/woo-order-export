@@ -20,7 +20,6 @@ if( !class_exists('WOOOE') ){
          */
         public $settings = array();
 
-
         //constructor
         function __construct() {
             spl_autoload_register(array($this, 'autoload'));
@@ -33,9 +32,11 @@ if( !class_exists('WOOOE') ){
          * Instantiate the class
          */
         public static function instance() {
+
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
             }
+
             return self::$_instance;
         }
 
@@ -43,6 +44,10 @@ if( !class_exists('WOOOE') ){
          * SPL Autoloader Function
          */
         function autoload($class_name){
+
+            if( strstr($class_name, 'WOOOE_Fetch') !== FALSE ){
+                include trailingslashit(WOOOE_BASE). 'classes/controllers/'. $class_name .'.php';
+            }
 
             if( strstr($class_name, 'WOOOE') !== FALSE ){
                 include trailingslashit(WOOOE_BASE). 'classes/'. $class_name .'.php';

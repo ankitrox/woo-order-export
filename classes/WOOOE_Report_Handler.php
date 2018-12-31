@@ -22,6 +22,7 @@ if( !class_exists('WOOOE_Report_Handler') ){
             try{
 
                 if(WOOOE_Data_Handler::validate()){
+                    WOOOE_Data_Handler::export_data();
                     self::return_report_status();
                 }
 
@@ -67,6 +68,7 @@ if( !class_exists('WOOOE_Report_Handler') ){
             $args = array(
                 'action' => 'woooe_fetch_report',
                 'chunk_size' => WOOOE_Data_Handler::get_chunk_size(),
+                'timestamp' => time(),
                 'startDate'=> WOOOE_Data_Handler::get_request_params('startDate'),
                 'endDate'=> WOOOE_Data_Handler::get_request_params('endDate'),
                 'total_records' => $query->found_posts,

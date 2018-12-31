@@ -31,35 +31,40 @@ return apply_filters( 'woooe_settings_fields_general', array(
             'name'     => __( 'Order ID', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_order_id',
-            'export_field' => 'yes'
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
         ),
 
         array(
             'name'     => __( 'Customer Name', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_customer_name',
-            'export_field' => 'yes'
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Customer'
         ),
 
         array(
             'name'     => __( 'Customer Email', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_customer_email',
-            'export_field' => 'yes'
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Customer'
         ),
     
         array(
             'name'     => __( 'Product Name', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_product_name',
-            'export_field' => 'yes'
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Product'
         ),
 
         array(
             'name'     => __( 'Order Status', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_order_status',
-            'export_field' => 'yes'
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
         ),
 
         array(

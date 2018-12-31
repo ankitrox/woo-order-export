@@ -11,24 +11,27 @@ if(!class_exists('WOOOE_Data_Handler')){
          * Chunk size - number of records to fetch at single run.
          */
         static $chunk_size =4;
-        
+
         /*
          * Holds the current query
          */
         static $query;
-        
+
+        /*
+         * Starts the export process.
+         * Creates file, loads data, writes file etc.
+         */
+        static function export_data(){
+            
+            WOOOE_File_Handler::prepare_file();
+            $data = new WOOOE_Fields_Loader(self::fields_to_export());
+        }
+
         /*
          * Get chunk size
          */
         static function get_chunk_size(){
             return apply_filters('woooe_chunk_size', self::$chunk_size);
-        }
-
-        /*
-         * Sends the data in array format
-         */
-        static function get_report_data(){
-            $fields_to_export   =   self::fields_to_export();
         }
         
         /*
@@ -50,13 +53,13 @@ if(!class_exists('WOOOE_Data_Handler')){
         static function fields_to_export(){
 
             global $woooe;
-            
+
             $fields = array();
-            
+
             foreach( $woooe->settings['general'] as $value ){
 
                 if( isset($value['export_field']) && 'yes' == $value['export_field'] && 'yes' == woocommerce_settings_get_option($value['id'], 'no') ){
-                    array_push($fields, $value['id']);
+                    array_push($fields, $value);
                 }
             }
 
@@ -88,7 +91,7 @@ if(!class_exists('WOOOE_Data_Handler')){
 
             return apply_filters('woooe_report_args', $args);
         }
-        
+
         /*
          * Get request parameters
          */
@@ -104,12 +107,14 @@ if(!class_exists('WOOOE_Data_Handler')){
             $startDate  = filter_input(INPUT_POST, 'startDate');
             $endDate    = filter_input(INPUT_POST, 'endDate');
             $offset     = filter_input(INPUT_POST, 'offset');
-            
+            $total_records  = filter_input(INPUT_POST, 'total_records');
+            $chunk_size = filter_input(INPUT_POST, 'chunk_size');
+            $timestamp  = filter_input(INPUT_POST, 'timestamp');
             //Default offset is 1
             $offset = !empty($offset) ? $offset : 0;
 
-            $return_data = compact('startDate', 'endDate', 'offset');
-            
+            $return_data = compact('startDate', 'endDate', 'offset', 'chunk_size', 'total_records', 'timestamp');
+
             if(!empty($return) && isset($return_data[$return])){
                 return $return_data[$return];
             }
