@@ -22,9 +22,9 @@ if(!class_exists('WOOOE_Data_Handler')){
          * Creates file, loads data, writes file etc.
          */
         static function export_data(){
-            
-            WOOOE_File_Handler::prepare_file();
-            $data = new WOOOE_Fields_Loader(self::fields_to_export());
+
+            $file_handler = WOOOE_File_Handler::prepare_file();
+            $field_loader = new WOOOE_Fields_Loader(self::fields_to_export());
         }
 
         /*

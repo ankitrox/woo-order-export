@@ -21,13 +21,16 @@ if( !class_exists('WOOOE') ){
         public $settings = array();
 
         //constructor
-        function __construct() {
+        protected function __construct() {
             spl_autoload_register(array($this, 'autoload'));
             $this->settings['general']      =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/general-settings.php';
             $this->settings['advanced']     =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/advanced-settings.php';
             $this->hooks();
         }
 
+        //Prevent cloning and unserialization.
+        private function __clone() {}
+        private function __wakeup() {}
         /*
          * Instantiate the class
          */
@@ -45,11 +48,12 @@ if( !class_exists('WOOOE') ){
          */
         function autoload($class_name){
 
+            //Load trait in advance.
+            include trailingslashit(WOOOE_BASE). 'classes/controllers/WOOOE_Trait_GetValue.php';
+            
             if( strstr($class_name, 'WOOOE_Fetch') !== FALSE ){
                 include trailingslashit(WOOOE_BASE). 'classes/controllers/'. $class_name .'.php';
-            }
-
-            if( strstr($class_name, 'WOOOE') !== FALSE ){
+            }elseif( strstr($class_name, 'WOOOE') !== FALSE ){
                 include trailingslashit(WOOOE_BASE). 'classes/'. $class_name .'.php';
             }
         }

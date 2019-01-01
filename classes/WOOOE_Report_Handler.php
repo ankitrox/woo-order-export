@@ -16,9 +16,9 @@ if( !class_exists('WOOOE_Report_Handler') ){
          * Fetches report data
          */
         static function fetch_report(){
-            
+
             $response = array();
-            
+
             try{
 
                 if(WOOOE_Data_Handler::validate()){
@@ -27,7 +27,7 @@ if( !class_exists('WOOOE_Report_Handler') ){
                 }
 
             }catch(Exception $e){
-                
+
                 $response['error'] = true;
                 
                 if(is_wp_error($e)){
@@ -38,7 +38,7 @@ if( !class_exists('WOOOE_Report_Handler') ){
                 }
             }
         }
-        
+
         /*
          * Fetch report stats
          */
