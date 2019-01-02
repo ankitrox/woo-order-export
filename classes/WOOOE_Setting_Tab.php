@@ -50,7 +50,7 @@ if( !class_exists('WOOE_Setting_Tab') ){
          */
         function update_settings(){
             global $current_section, $woooe;
-
+            
             if(in_array( $current_section, array('', 'general')) ){
                 woocommerce_update_options( $woooe->settings['general'] );
             }

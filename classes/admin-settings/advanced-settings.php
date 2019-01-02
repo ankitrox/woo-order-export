@@ -1,17 +1,32 @@
 <?php
+$order_statuses_fields = woooe_order_statuses_section_end(woooe_order_statuses_section_start(woooe_order_statuses()));
 
-return apply_filters( 'woooe_settings_fields_advanced', array(
-
-        'section_title' => array(
-            'name'     => __( 'Advanced Settings', 'woooe' ),
+$export_fashion = array(
+    
+        array(
+            'name'     => __( 'Export style', 'woooe' ),
             'type'     => 'title',
             'desc'     => '',
-            'id'       => 'woooe_title'
+            'id'       => 'woooe_export_style'
+        ),
+    
+        array(
+            'type'     => 'radio',
+            'options'  => array(
+                'inline' => __('Export each order on single row', 'woooe'),
+                'separate' => __('Export each product in order in separate row', 'woooe')
+            ),
+            'id'       => 'woooe_field_start_date'
         ),
 
-        'section_end' => array(
+
+        array(
              'type' => 'sectionend',
-             'id' => 'woooe_title'
-        )
-    
-));
+             'id' => 'woooe_export_style'
+        ),
+
+);
+
+$fields = array_merge($order_statuses_fields, $export_fashion);
+
+return apply_filters( 'woooe_settings_fields_advanced', $fields );

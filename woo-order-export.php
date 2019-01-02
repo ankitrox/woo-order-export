@@ -30,13 +30,14 @@ if( !defined( 'WOOOE_BASE_URL' ) ){
 
 //Include main class
 if( !class_exists('WOOOE') ) {
+    include_once dirname( __FILE__ ) . '/lib/functions.php';
     include_once dirname( __FILE__ ) . '/classes/class-woooe.php';
 }
 
 function _WOOE(){
-    return WOOOE::instance();
+    //return WOOOE::instance();
+    $GLOBALS['woooe'] = WOOOE::instance();
 }
-
-$GLOBALS['woooe'] = _WOOE();
+add_action('woocommerce_init', '_WOOE', 0);
 
 register_activation_hook( __FILE__, array('WOOOE_File_Handler', 'create_folder') );
