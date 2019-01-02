@@ -12,12 +12,9 @@ if(!class_exists('WOOOE_Fetch_Order')){
         /*
          * Order ID
          */
-        public $order_id;
+        public $order_id, $order, $order_number;
         
-        /*
-         * Order object
-         */
-        public $order;
+        static $instance = array();
 
         //Constructor
         function __construct($order_id) {

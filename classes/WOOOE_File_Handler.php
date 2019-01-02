@@ -42,22 +42,25 @@ if(!class_exists('WOOOE_File_Handler')){
          */
         static function prepare_file(){
 
-            $upload_directory = wp_upload_dir();
+            if(is_null(self::$file)){
 
-            //temporary name for file which is timestamp
-            $temp_filename  =   WOOOE_Data_Handler::get_request_params('timestamp').self::$extension;
-            $filepath       =   trailingslashit($upload_directory['basedir']). self::$dir.'/'.$temp_filename;
+                $upload_directory = wp_upload_dir();
+                //temporary name for file which is timestamp
+                $temp_filename  =   WOOOE_Data_Handler::get_request_params('timestamp').self::$extension;
+                $filepath       =   trailingslashit($upload_directory['basedir']). self::$dir.'/'.$temp_filename;
 
-            $mode = file_exists($filepath) ? 'a' : 'w';
-            $fields = wp_list_pluck(WOOOE_Data_Handler::fields_to_export(), 'name');
-            
-            if( !$file_pointer = fopen($filepath, $mode) ){
-                throw new Exception( __('Couldn\'t create the file.', 'woooe') );
+                $mode = file_exists($filepath) ? 'a' : 'w';
+                $fields = wp_list_pluck(WOOOE_Data_Handler::fields_to_export(), 'name');
+
+                if( !$file_pointer = fopen($filepath, $mode) ){
+                    throw new Exception( __('Couldn\'t create the file.', 'woooe') );
+                }
+
+                //If newly created file, then write headings to it.
+                $length = ('w' === $mode) ? fputcsv($file_pointer, $fields) : '';
+                self::$file = $file_pointer;
             }
 
-            //If newly created file, then write headings to it.
-            $length = ('w' === $mode) ? fputcsv($file_pointer, $fields) : '';
-            self::$file = $file_pointer;
             return self::$file;
         }
         
@@ -67,7 +70,7 @@ if(!class_exists('WOOOE_File_Handler')){
         static function add_row($data){
             
             if( count($data) === count(WOOOE_Data_Handler::fields_to_export()) ){
-                $string_length = fputcsv(self::$file, $data);
+                $string_length = fputcsv(self::prepare_file(), $data);
             }
         }
     }

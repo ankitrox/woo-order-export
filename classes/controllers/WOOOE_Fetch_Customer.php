@@ -59,7 +59,7 @@ if(!class_exists('WOOOE_Fetch_Customer')){
             $name = '';
 
             $fname = $this->customer->get_first_name();
-            $lname = $this->customer->get_first_name();
+            $lname = $this->customer->get_last_name();
 
             $name = trim($fname.' '.$lname);
 

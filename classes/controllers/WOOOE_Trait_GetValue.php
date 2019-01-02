@@ -16,6 +16,8 @@ if( !trait_exists('WOOOE_Trait_GetValue', false) ){
             if( empty(self::$instance[$order_id]) ){
                 self::$instance[$order_id] = new self($order_id);
             }
+            
+            return self::$instance[$order_id];
         }
         
         function set_value(){
@@ -24,12 +26,12 @@ if( !trait_exists('WOOOE_Trait_GetValue', false) ){
             }
         }
 
-        function get_value( $order_id, $property ){
+        function get_value($property){
 
             $value = null;
 
             if(property_exists(self, $property)){
-                $value = self::$instance[$order_id]->$property;
+                $value = self::$instance[$this->order_id]->$property;
             }
 
             return $value;

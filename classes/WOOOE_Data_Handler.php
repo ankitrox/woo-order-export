@@ -38,7 +38,7 @@ if(!class_exists('WOOOE_Data_Handler')){
          * Gets the current instance of query.
          */
         static function get_current_query(){
-            
+
             if(!(self::$query instanceof WP_Query)){
                 $args = self::get_report_args();
                 self::$query = new WP_Query($args);
@@ -77,7 +77,7 @@ if(!class_exists('WOOOE_Data_Handler')){
 
             $args = array(
                         'post_type'=>'shop_order',
-                        'posts_per_page'=> 1,
+                        'posts_per_page'=> self::get_chunk_size(),
                         'post_status'=> 'any',
                         'offset'=> self::get_request_params('offset')
                     );
