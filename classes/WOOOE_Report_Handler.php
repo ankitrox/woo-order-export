@@ -1,5 +1,4 @@
 <?php
-
 //Prevent direct access.
 if(!defined('ABSPATH')){
     exit;
@@ -17,8 +16,6 @@ if( !class_exists('WOOOE_Report_Handler') ){
          */
         static function fetch_report(){
 
-            $response = array();
-
             try{
 
                 if(WOOOE_Data_Handler::validate()){
@@ -28,14 +25,13 @@ if( !class_exists('WOOOE_Report_Handler') ){
 
             }catch(Exception $e){
 
-                $response['error'] = true;
-                
                 if(is_wp_error($e)){
-                    $msgs = $e->get_error_messages();
-                    foreach( $msgs as $msg ){
-                        $response['error_msgs'] = '<p>'.$msg.'</p>';
-                    }
+                    $msg = $e->get_error_message();
+                }else{
+                    $msg = $e->getMessage();
                 }
+
+                wp_send_json_error($msg);
             }
         }
 
@@ -72,7 +68,8 @@ if( !class_exists('WOOOE_Report_Handler') ){
                 'startDate'=> WOOOE_Data_Handler::get_request_params('startDate'),
                 'endDate'=> WOOOE_Data_Handler::get_request_params('endDate'),
                 'total_records' => $query->found_posts,
-                'offset' => ( WOOOE_Data_Handler::get_chunk_size() * WOOOE_Data_Handler::get_request_params('offset') )
+                'offset' => ( WOOOE_Data_Handler::get_chunk_size() * WOOOE_Data_Handler::get_request_params('offset') ),
+                'fileurl' => add_query_arg(array( 'woooe_download'=> wp_create_nonce('woooe_download'), 'filename'=>WOOOE_Data_Handler::get_request_params('timestamp')), admin_url())
             );
 
             wp_send_json_success($args);

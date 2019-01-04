@@ -16,9 +16,8 @@ $export_fashion = array(
                 'inline' => __('Export each order on single row', 'woooe'),
                 'separate' => __('Export each product in order in separate row', 'woooe')
             ),
-            'id'       => 'woooe_field_start_date'
+            'id'       => 'woooe_field_export_style'
         ),
-
 
         array(
              'type' => 'sectionend',

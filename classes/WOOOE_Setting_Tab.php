@@ -103,6 +103,7 @@ if( !class_exists('WOOE_Setting_Tab') ){
                 <th></th>
                 <td class="forminp">
                     <input class="button btn" id="<?php echo $value['id']; ?>" type="button" value="<?php echo $value['name']; ?>" />
+                    <div id="woooe-loader" style="margin-top: 10px; display: none;"><img src="<?php echo WOOOE_BASE_URL.'/assets/img/ajaxloader.gif' ?>" alt="<?php _e('Please wait...', 'woooe') ?>" /></div>
                 </td>
             </tr><?php
         }

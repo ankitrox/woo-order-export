@@ -1,5 +1,5 @@
 jQuery(document).ready(function(){
-    
+
     /*
      * Add datepicker to start and end date boxes.
      */
@@ -17,11 +17,14 @@ jQuery(document).ready(function(){
             var total_records = parseInt(response.data.total_records);
             var chunk_size = parseInt(response.data.chunk_size);
             var offset = parseInt(response.data.offset);
+            var remaining_records = (total_records - (response.data.chunk_size * ++offset));
 
-            if( (total_records - (chunk_size * ++offset)) > 0 ){
+            if( remaining_records > 0 ){
                 ++response.data.offset;
                 new getReport(response.data);
             }
+            
+            jQuery('body').trigger('woooe_process_completed', response);
         });
     };
 
@@ -38,6 +41,8 @@ jQuery(document).ready(function(){
          startDate : start_date,  
          endDate : end_date,
        };
+       
+        jQuery("#woooe-loader").show();
 
         jQuery.post( ajaxurl, data, function(response){
 
@@ -48,5 +53,17 @@ jQuery(document).ready(function(){
             }
         });
        
+    });
+    
+    /*
+     * 
+     */
+    jQuery('body').on('woooe_process_completed', function(event, response){
+        
+        jQuery("#woooe-loader").hide();
+        
+        if(response.success === true){
+            window.location = response.data.fileurl;
+        }
     });
 });

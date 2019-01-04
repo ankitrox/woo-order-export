@@ -29,11 +29,27 @@ if(!class_exists('WOOOE_File_Handler')){
 
             $upload_directory = wp_upload_dir();
 
-            if( empty($upload_directory['error']) && isset($upload_directory['basedir']) && !file_exists(trailingslashit($upload_directory['basedir']). self::$dir.'/') && is_writable($upload_directory['basedir']) ){
+            if(self::upload_dir()){
                 if( !mkdir( trailingslashit($upload_directory['basedir']). self::$dir.'/' ) ){
                     throw new Exception( __('Cannot create directory inside uploads folder.', 'woooe') );
                 }
+            }else{
+                throw new Exception( __('Cannot create directory inside uploads folder.', 'woooe') );
             }
+        }
+        
+        /*
+         * Get upload directory for order export plugin
+         */
+        static function upload_dir(){
+            
+            $upload_directory = wp_upload_dir();
+            
+            if( empty($upload_directory['error']) && isset($upload_directory['basedir']) && is_writable($upload_directory['basedir']) ){
+                return trailingslashit($upload_directory['basedir']). self::$dir.'/';
+            }
+            
+            return false;
         }
 
         /*
@@ -44,10 +60,9 @@ if(!class_exists('WOOOE_File_Handler')){
 
             if(is_null(self::$file)){
 
-                $upload_directory = wp_upload_dir();
                 //temporary name for file which is timestamp
                 $temp_filename  =   WOOOE_Data_Handler::get_request_params('timestamp').self::$extension;
-                $filepath       =   trailingslashit($upload_directory['basedir']). self::$dir.'/'.$temp_filename;
+                $filepath       =   self::upload_dir() . $temp_filename;
 
                 $mode = file_exists($filepath) ? 'a' : 'w';
                 $fields = wp_list_pluck(WOOOE_Data_Handler::fields_to_export(), 'name');
@@ -71,6 +86,53 @@ if(!class_exists('WOOOE_File_Handler')){
             
             if( count($data) === count(WOOOE_Data_Handler::fields_to_export()) ){
                 $string_length = fputcsv(self::prepare_file(), $data);
+            }
+        }
+        
+        /*
+         * Get valid download filename
+         */
+        static function filename(){
+            
+            $filename   =   woocommerce_settings_get_option('woooe_field_export_filename', 'orderexport.csv');
+            $filename   =   !empty($filename) ? $filename : 'orderexport';
+            $pathinfo   =   pathinfo($filename);
+            
+            //If extension is set
+            if(!empty($pathinfo['extension']) && 'csv' === $pathinfo['extension']){
+                return $filename;
+            }
+            
+            return $pathinfo['filename'].'.csv';
+        }
+        
+        /*
+         * Download the csv file.
+         */
+        static function download(){
+            
+            $wooe_download = filter_input(INPUT_GET, 'woooe_download', FILTER_DEFAULT);
+            $wooe_filename = filter_input(INPUT_GET, 'filename', FILTER_DEFAULT);
+
+            if( !empty($wooe_filename) && !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))
+                && wp_verify_nonce($wooe_download, 'woooe_download')
+            )
+            {
+                
+                $charset    =   get_option('blog_charset');
+                $csv_file   =   path_join( self::upload_dir(), $wooe_filename.'.csv');
+
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header('Content-Description: File Transfer');
+                header('Content-Encoding: '. $charset);
+                header('Content-type: text/csv; charset='. $charset);
+                header("Content-Disposition: attachment; filename=". self::filename());
+                header("Expires: 0");
+                header("Pragma: no-cache");
+                readfile($csv_file);
+                unlink($csv_file);
+                exit;
+
             }
         }
     }

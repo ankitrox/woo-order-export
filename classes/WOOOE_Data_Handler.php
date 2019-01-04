@@ -10,7 +10,7 @@ if(!class_exists('WOOOE_Data_Handler')){
         /*
          * Chunk size - number of records to fetch at single run.
          */
-        static $chunk_size =4;
+        static $chunk_size =1;
 
         /*
          * Holds the current query
@@ -67,6 +67,26 @@ if(!class_exists('WOOOE_Data_Handler')){
         }
 
         /*
+         * Returns the order statuses to export.
+         */
+        static function get_statuses(){
+            
+            global $woooe;
+            $statuses = array_keys(wc_get_order_statuses());
+            
+            $selected_statuses = array();
+            
+            foreach($statuses as $staus){
+                
+                if( 'yes' == woocommerce_settings_get_option('wooe_order_status_'.$staus, 'no') ){
+                    array_push($selected_statuses, $staus);
+                }
+            }
+            
+            return !empty($selected_statuses) ? $selected_statuses : $statuses;
+        }
+
+        /*
          * Get arguments related to getting reports for orders.
          */
         static function get_report_args(){
@@ -78,17 +98,17 @@ if(!class_exists('WOOOE_Data_Handler')){
             $args = array(
                         'post_type'=>'shop_order',
                         'posts_per_page'=> self::get_chunk_size(),
-                        'post_status'=> 'any',
+                        'post_status'=> self::get_statuses(),
                         'offset'=> self::get_request_params('offset')
                     );
 
             //Date query for orders.
             $args['date_query'] = array(
-                                    'after' => $startDate,
-                                    'before' => $endDate,
+                                    'after' => self::get_request_params('startDate'),
+                                    'before' => self::get_request_params('endDate'),
                                     'inclusive' => true,
                                 );
-
+            
             return apply_filters('woooe_report_args', $args);
         }
 
@@ -96,7 +116,7 @@ if(!class_exists('WOOOE_Data_Handler')){
          * Get request parameters
          */
         static function get_request_params($return = null){
-            
+
             /*
              * Requested return value should be scalar
              */
@@ -127,8 +147,8 @@ if(!class_exists('WOOOE_Data_Handler')){
          */
         static function validate(){
 
-            $startDate  = filter_input(INPUT_POST, 'startDate');
-            $endDate    = filter_input(INPUT_POST, 'endDate');
+            $startDate  = self::get_request_params('startDate');
+            $endDate    = self::get_request_params('endDate');
 
             if( empty($startDate) || empty($endDate) ){
                 throw new WP_Error( 'empty_period', __('Enter start date and End date', 'woooe') );
