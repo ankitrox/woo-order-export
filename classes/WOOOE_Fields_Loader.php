@@ -50,6 +50,8 @@ if(!class_exists('WOOOE_Fields_Loader')){
 
                     $current_query->the_post();
                     
+                    $p = WOOOE_Fetch_Product::instance(get_the_ID());
+                    
                     /*
                      * If your fields are using classes.
                      * Load the classes by instantiating them,
@@ -85,7 +87,7 @@ if(!class_exists('WOOOE_Fields_Loader')){
                         $instance = $class::instance(self::$track);
                         $row[$field['id']] = $instance->$field_name;
                     }
-                    
+
                     //Check if field has function
                     if( isset($field['function']) && is_callable($field['function']) ){
                         $row[$field['id']] = $field['function']();
@@ -94,6 +96,45 @@ if(!class_exists('WOOOE_Fields_Loader')){
                 
                 return $row;
             }
+        }
+        
+        /*
+         * Gets records according to export fashion
+         */
+        function get_records($order_id, $data){
+            
+            $records = array();
+            $export_style = woocommerce_settings_get_option('woooe_field_export_style', 'inline');
+
+            $product_instance = WOOOE_Fetch_Product::instance($order_id);
+            $product_names  =   $product_instance->product_name();
+            
+            switch($export_style){
+                
+                case 'inline':
+                    $getData = array_map(function($element){
+
+                        return is_array($element) ? implode(' | ', $element) : $element;
+                        
+                    }, $data);
+                    array_push($records, $getData);
+                break;
+            
+                case 'separate':
+                    foreach($product_names as $key=>$product_name){
+
+                        $getData = array_map(function($element, $key){
+
+                            return is_array($element) ? $element[$key] : $element;
+
+                        }, $data, array_fill(0, count($data), $key));
+
+                        array_push($records, $getData);
+                    }
+                break;
+            }
+            
+            return $records;
         }
 
         /*
@@ -104,19 +145,14 @@ if(!class_exists('WOOOE_Fields_Loader')){
             if( !is_array($this->data) ){
                 return;
             }
+            
+            foreach( $this->data as $order_id=>$data ){
 
-            foreach( $this->data as $data ){
+                $records = $this->get_records($order_id, $data);
 
-                $mapped_data = array_map(function($element){
-
-                    if(is_array($element)){
-                        return implode(' | ', $element);
-                    }
-
-                    return $element;
-                }, $data);
-
-                WOOOE_File_Handler::add_row($mapped_data);
+                foreach($records as $record){
+                    WOOOE_File_Handler::add_row($record);
+                }
             }
         }
     }

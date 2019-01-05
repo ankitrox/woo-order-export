@@ -60,3 +60,18 @@ if(!function_exists('woooe_order_statuses_section_end')){
         return $fields;
     }
 }
+
+/*
+ * Prepare data for export style - inline
+ */
+if(!function_exists('woooe_filter_record')){
+
+    function woooe_filter_record($element, $export_style = 'inline'){
+
+        if(is_array($element)){
+            return ('inline' == $export_style) ? implode(' | ', $element) : $element[0];
+        }
+
+        return $element;
+    }
+}

@@ -23,7 +23,7 @@ if(!class_exists('WOOOE_Fetch_Product')){
         function __construct($order_id) {
 
             parent::__construct($order_id);
-            $this->properties = apply_filters('woooe_order_properties', array('product_name'));
+            $this->properties = apply_filters('woooe_product_properties', array('product_name'));
             $this->set_value();
         }
 

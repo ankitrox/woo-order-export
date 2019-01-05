@@ -12,7 +12,7 @@ if( !trait_exists('WOOOE_Trait_GetValue', false) ){
     trait WOOOE_Trait_GetValue {
 
         //Creates instance and stores in property.
-        function instance($order_id){
+        static function instance($order_id){
             if( empty(self::$instance[$order_id]) ){
                 self::$instance[$order_id] = new self($order_id);
             }

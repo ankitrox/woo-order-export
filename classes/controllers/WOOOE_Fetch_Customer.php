@@ -28,7 +28,7 @@ if(!class_exists('WOOOE_Fetch_Customer')){
 
             parent::__construct($order_id);
             $this->customer = new WC_Customer($this->order->get_user_id());
-            $this->properties = apply_filters('woooe_order_properties', array('customer_name','customer_email') );
+            $this->properties = apply_filters('woooe_customer_properties', array('customer_name','customer_email') );
             $this->set_value();
         }
 

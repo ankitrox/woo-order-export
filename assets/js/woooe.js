@@ -14,17 +14,23 @@ jQuery(document).ready(function(){
 
         jQuery.post(ajaxurl, params, function(response){
 
-            var total_records = parseInt(response.data.total_records);
-            var chunk_size = parseInt(response.data.chunk_size);
-            var offset = parseInt(response.data.offset);
-            var remaining_records = (total_records - (response.data.chunk_size * ++offset));
+            if(response.success === true){
 
-            if( remaining_records > 0 ){
-                ++response.data.offset;
-                new getReport(response.data);
+                var total_records = parseInt(response.data.total_records);
+                var chunk_size = parseInt(response.data.chunk_size);
+                var offset = parseInt(response.data.offset);
+                var remaining_records = (total_records - (response.data.chunk_size * ++offset));
+
+                if( remaining_records > 0 ){
+                    ++response.data.offset;
+                    new getReport(response.data);
+                }
+            
             }
             
-            jQuery('body').trigger('woooe_process_completed', response);
+            if( remaining_records <= 0 ){
+                jQuery('body').trigger('woooe_process_completed', response);
+            }
         });
     };
 

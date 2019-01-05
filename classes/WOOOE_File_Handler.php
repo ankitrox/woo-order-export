@@ -110,7 +110,7 @@ if(!class_exists('WOOOE_File_Handler')){
          * Download the csv file.
          */
         static function download(){
-            
+
             $wooe_download = filter_input(INPUT_GET, 'woooe_download', FILTER_DEFAULT);
             $wooe_filename = filter_input(INPUT_GET, 'filename', FILTER_DEFAULT);
 
@@ -118,21 +118,21 @@ if(!class_exists('WOOOE_File_Handler')){
                 && wp_verify_nonce($wooe_download, 'woooe_download')
             )
             {
-                
                 $charset    =   get_option('blog_charset');
                 $csv_file   =   path_join( self::upload_dir(), $wooe_filename.'.csv');
 
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 header('Content-Description: File Transfer');
-                header('Content-Encoding: '. $charset);
-                header('Content-type: text/csv; charset='. $charset);
+                header('Content-Type: application/octet-stream');
                 header("Content-Disposition: attachment; filename=". self::filename());
                 header("Expires: 0");
-                header("Pragma: no-cache");
+                header('Cache-Control: must-revalidate');
+                header('Content-Encoding: '. $charset);
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($csv_file));
+                flush();
                 readfile($csv_file);
                 unlink($csv_file);
                 exit;
-
             }
         }
     }

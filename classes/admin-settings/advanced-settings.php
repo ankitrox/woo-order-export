@@ -2,7 +2,7 @@
 $order_statuses_fields = woooe_order_statuses_section_end(woooe_order_statuses_section_start(woooe_order_statuses()));
 
 $export_fashion = array(
-    
+
         array(
             'name'     => __( 'Export style', 'woooe' ),
             'type'     => 'title',

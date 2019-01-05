@@ -10,7 +10,7 @@ if(!class_exists('WOOOE_Data_Handler')){
         /*
          * Chunk size - number of records to fetch at single run.
          */
-        static $chunk_size =1;
+        static $chunk_size =3;
 
         /*
          * Holds the current query
@@ -99,7 +99,7 @@ if(!class_exists('WOOOE_Data_Handler')){
                         'post_type'=>'shop_order',
                         'posts_per_page'=> self::get_chunk_size(),
                         'post_status'=> self::get_statuses(),
-                        'offset'=> self::get_request_params('offset')
+                        'offset'=> (self::get_request_params('offset') * self::get_chunk_size())
                     );
 
             //Date query for orders.
@@ -132,6 +132,7 @@ if(!class_exists('WOOOE_Data_Handler')){
             $timestamp  = filter_input(INPUT_POST, 'timestamp');
             //Default offset is 1
             $offset = !empty($offset) ? $offset : 0;
+            $timestamp = !empty($timestamp) ? $timestamp : time();
 
             $return_data = compact('startDate', 'endDate', 'offset', 'chunk_size', 'total_records', 'timestamp');
 
