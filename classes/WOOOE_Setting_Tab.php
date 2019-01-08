@@ -174,7 +174,7 @@ if( !class_exists('WOOE_Setting_Tab') ){
                     $updated_fields_to_export = array_intersect_key($total_fields, $post_values);
                     $to_add = array_diff_key($updated_fields_to_export, $reorder_settings);
                     $to_remove = array_diff_key($reorder_settings, $updated_fields_to_export);
-                    
+
                     foreach($to_add as $k=>$v){
                         $reorder_settings[$k] = $v;
                     }
@@ -182,7 +182,7 @@ if( !class_exists('WOOE_Setting_Tab') ){
                     foreach($to_remove as $k=>$v){
                         unset($reorder_settings[$k]);
                     }
-                    
+
                     $update = update_option('woooe_reorder_rename', $reorder_settings, false);
                 }            
             }

@@ -68,6 +68,14 @@ return apply_filters( 'woooe_settings_fields_general', array(
         ),
 
         array(
+            'name'     => __( 'Payment Method', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => '_payment_method',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+    
+        array(
              'type' => 'sectionend',
              'id' => 'woooe_title_sm'
         ),

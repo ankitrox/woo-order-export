@@ -85,7 +85,7 @@ if(!class_exists('WOOOE_Fields_Loader')){
                         $field_name = str_replace('woooe_field_', '', $field['id']);
                         $class = $field['class'];
                         $instance = $class::instance(self::$track);
-                        $row[$field['id']] = $instance->$field_name;
+                        $row[$field['id']] = $instance->get_value($field_name);
                     }
 
                     //Check if field has function

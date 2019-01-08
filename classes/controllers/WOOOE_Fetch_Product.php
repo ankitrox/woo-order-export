@@ -27,24 +27,6 @@ if(!class_exists('WOOOE_Fetch_Product')){
             $this->set_value();
         }
 
-        /*
-         * Set defined and selected properties.
-         */
-        function __set($key, $value) {
-            //Set only valid properties
-            if( in_array($key, $this->properties) ){
-                $this->properties[$key] = $value;
-            }
-        }
-
-        /*
-         * Get valid properties.
-         */
-        function __get($name) {
-            if(in_array($name, $this->properties)){
-               return $this->properties[$name]; 
-            }
-        }
 
         /*
          * Gets product names for an order.

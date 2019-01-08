@@ -55,6 +55,7 @@ if(!class_exists('WOOOE_Data_Handler')){
             global $woooe;
 
             $fields = array();
+            $reorder_settings = get_option('woooe_reorder_rename', array());
 
             foreach( $woooe->settings['general'] as $value ){
 
@@ -64,6 +65,21 @@ if(!class_exists('WOOOE_Data_Handler')){
                     }elseif ($exportable_fields) {
                         array_push($fields, $value);
                     }
+                }
+            }
+            
+            if( !empty($fields) && !empty($reorder_settings) && !$exportable_fields ){
+                
+                $temp_fields = $fields; //Temp holding variable
+                $fields = array(); //Reset fields variable
+
+                $plucked_list = wp_list_pluck($temp_fields, 'id');
+                
+                foreach($reorder_settings as $key=>$value){
+                    $index = array_search($key, $plucked_list);
+                    $val = $temp_fields[$index];
+                    $val['name'] = $value;
+                    array_push($fields, $val);
                 }
             }
 

@@ -30,8 +30,10 @@ if( !trait_exists('WOOOE_Trait_GetValue', false) ){
 
             $value = null;
 
-            if(property_exists(self, $property)){
-                $value = self::$instance[$this->order_id]->$property;
+            if(property_exists($this, $property)){
+                $value = $this->$property;
+            }else{
+                $value = get_post_meta($this->order_id, $property, true);
             }
 
             return $value;
