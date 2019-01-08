@@ -163,11 +163,12 @@ if( !class_exists('WOOE_Setting_Tab') ){
                     $update = update_option('woooe_reorder_rename', $reorder_settings, false);
                 }
                 
-                if('general' === $current_section){
-                    
+                //General section can be empty as well for `woooe` page.
+                if( empty($current_section) || ('general' === $current_section) ){
+
                     $reorder_settings = get_option('woooe_reorder_rename', array());
                     $post_values = !empty($_POST) ? ($_POST) : array();
-                    
+
                     $fields_to_export = WOOOE_Data_Handler::fields_to_export(true);
                     $total_fields = wp_list_pluck($fields_to_export, 'name', 'id');
 

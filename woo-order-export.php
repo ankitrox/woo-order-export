@@ -20,6 +20,10 @@ if( !defined( 'WOOOE_BASE' ) ){
     define( 'WOOOE_BASE', dirname(__FILE__) );
 }
 
+if( !defined( 'WOOOE_BASENAME' ) ){
+    define( 'WOOOE_BASENAME', plugin_basename(__FILE__) );
+}
+
 if( !defined( 'WOOOE_BASE_FILE' ) ){
     define( 'WOOOE_BASE_FILE', __FILE__ );
 }
@@ -34,10 +38,10 @@ if( !class_exists('WOOOE') ) {
     include_once dirname( __FILE__ ) . '/classes/class-woooe.php';
 }
 
-function _WOOE(){
+function _WOOOE(){
     //return WOOOE::instance();
     $GLOBALS['woooe'] = WOOOE::instance();
 }
-add_action('woocommerce_init', '_WOOE', 0);
+add_action('woocommerce_init', '_WOOOE', 0);
 
 register_activation_hook( __FILE__, array('WOOOE_File_Handler', 'create_folder') );

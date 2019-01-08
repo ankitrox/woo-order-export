@@ -23,6 +23,7 @@ if(!class_exists('WOOOE_Fetch_Order')){
             $this->order = wc_get_order($order_id);
             $this->order_number = $this->order->get_order_number();
             $this->order_status = $this->order->get_status();
+            $this->order_date = $this->order->get_date_created();
         }
     }
 }

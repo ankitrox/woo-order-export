@@ -75,3 +75,17 @@ if(!function_exists('woooe_filter_record')){
         return $element;
     }
 }
+
+/*
+ * Add settings page link
+ */
+if(!function_exists('woooe_action_link')){
+
+    function woooe_action_link($links){
+        
+        $settings_url = add_query_arg(array('page'=>'wc-settings', 'tab'=>'woooe'), admin_url('admin.php'));
+        $settings_link = array(sprintf('<a href="%s">'.__('Settings', 'woooe').'</a>', $settings_url));
+        return array_merge($settings_link, $links );
+    }
+
+}

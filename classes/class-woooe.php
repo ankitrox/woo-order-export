@@ -62,6 +62,7 @@ if( !class_exists('WOOOE') ){
          * Adds all necessary hooks.
          */
         function hooks(){
+            add_filter( 'plugin_action_links_'.WOOOE_BASENAME, 'woooe_action_link' );
             add_action('admin_enqueue_scripts', array($this, 'scripts'));
             add_action('woocommerce_get_settings_pages', function(){new WOOOE_Setting_Tab();});
             add_action('wp_ajax_woooe_get_report', array('WOOOE_Report_Handler', 'fetch_report_stats') );

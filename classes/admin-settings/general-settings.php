@@ -36,6 +36,22 @@ return apply_filters( 'woooe_settings_fields_general', array(
         ),
 
         array(
+            'name'     => __( 'Order Number', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_number',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
+        array(
+            'name'     => __( 'Order Date', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_date',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+    
+        array(
             'name'     => __( 'Customer Name', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_customer_name',
@@ -50,7 +66,7 @@ return apply_filters( 'woooe_settings_fields_general', array(
             'export_field' => 'yes',
             'class' => 'WOOOE_Fetch_Customer'
         ),
-    
+
         array(
             'name'     => __( 'Product Name', 'woooe' ),
             'type'     => 'checkbox',
@@ -67,14 +83,6 @@ return apply_filters( 'woooe_settings_fields_general', array(
             'class' => 'WOOOE_Fetch_Order'
         ),
 
-        array(
-            'name'     => __( 'Payment Method', 'woooe' ),
-            'type'     => 'checkbox',
-            'id'       => '_payment_method',
-            'export_field' => 'yes',
-            'class' => 'WOOOE_Fetch_Order'
-        ),
-    
         array(
              'type' => 'sectionend',
              'id' => 'woooe_title_sm'
