@@ -4,6 +4,37 @@ jQuery(document).ready(function(){
      * Add datepicker to start and end date boxes.
      */
     jQuery('.woooe-datepicker').datepicker({ dateFormat : "dd-mm-yy" });
+    
+    /*
+     * Reorder element up
+     */
+    jQuery('.woooe-up').on('click', function(e){
+        
+        e.preventDefault();
+       
+       var this_element =  jQuery(this).parents('.reorder-row');
+       var prev_element =  jQuery(this_element).prev('.reorder-row');
+       
+       if(prev_element.length > 0){
+           jQuery(prev_element).before(jQuery(this_element));
+       }
+    });
+
+    /*
+     * Reorder element down
+     */
+    jQuery('.woooe-down').on('click', function(e){
+        
+        e.preventDefault();
+       
+       var this_element =  jQuery(this).parents('.reorder-row');
+       var next_element =  jQuery(this_element).next('.reorder-row');
+       
+       if(next_element.length > 0){
+           jQuery(next_element).after(jQuery(this_element));
+       }
+    });
+
 
     /*
      * 
@@ -62,7 +93,7 @@ jQuery(document).ready(function(){
     });
     
     /*
-     * 
+     * Event listener fires when fetching of records are done.
      */
     jQuery('body').on('woooe_process_completed', function(event, response){
         

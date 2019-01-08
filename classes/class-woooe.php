@@ -76,7 +76,7 @@ if( !class_exists('WOOOE') ){
             wp_enqueue_script('jquery-ui-datepicker');
             wp_enqueue_script( 'woooe-script', trailingslashit(WOOOE_BASE_URL).'assets/js/woooe.js', array('jquery-ui-datepicker'), false, true );
             wp_enqueue_style('jquery-ui-datepicker');
-            
+            wp_enqueue_style('woooe-style', trailingslashit(WOOOE_BASE_URL).'assets/css/woooe.css', array());
         }
 
     }

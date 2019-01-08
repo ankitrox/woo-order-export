@@ -1,0 +1,4 @@
+.reorder-row { background: #FFF; display: flex; padding: 10px 5px; margin-top: 20px }
+    .reorder-row .rename { flex-grow: 3 }
+    .reorder-row .reorder { flex-grow: 1 }
+    .reorder-row input[type="text"] { width: 80% !important; }

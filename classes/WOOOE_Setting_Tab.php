@@ -19,6 +19,8 @@ if( !class_exists('WOOE_Setting_Tab') ){
             add_filter( 'woocommerce_update_options_woooe', array($this, 'update_settings') );
             add_action( 'woocommerce_sections_' . $this->id, array( $this, 'output_sections' ) );
             add_action( 'woocommerce_admin_field_export_button', array( $this, 'export_button' ) );
+            add_action( 'woocommerce_admin_field_woooe_reorder', array( $this, 'woooe_reorder' ) );
+            add_action( 'woocommerce_settings_saved', array( $this, 'save' ) );
         }
 
         /*
@@ -106,6 +108,84 @@ if( !class_exists('WOOE_Setting_Tab') ){
                     <div id="woooe-loader" style="margin-top: 10px; display: none;"><img src="<?php echo WOOOE_BASE_URL.'/assets/img/ajaxloader.gif' ?>" alt="<?php _e('Please wait...', 'woooe') ?>" /></div>
                 </td>
             </tr><?php
+        }
+        
+        /*
+         * Reorder/Rename fields
+         */
+        function woooe_reorder(){
+            
+            $reorder_options = get_option('woooe_reorder_rename', array()); ?>
+            
+            <tr>
+                <td style="padding-left: 0;" class="forminp" colspan="2">
+                    <section class="woooe-reorder-section"><?php
+                    
+                        if(!empty($reorder_options)){
+                
+                            foreach($reorder_options as $id=>$name){?>
+
+                                <div class="reorder-row">
+                                    <div class="rename">
+                                        <input type="text" name="woooe_field_names[]" value="<?php echo $name; ?>" autocomplete="off" />
+                                        <input type="hidden" name="woooe_field_ids[]" value="<?php echo $id; ?>" />
+                                    </div>
+                                    <div class="reorder">
+                                        <a href="#" title="<?php _e('Move Up', 'woooe') ?>" class="dashicons dashicons-arrow-up-alt2 woooe-move woooe-up"></a>
+                                        <a href="#" title="<?php _e('Move Down', 'woooe') ?>" class="dashicons dashicons-arrow-down-alt2 woooe-move woooe-down"></a>
+                                    </div>
+                                </div><?php
+
+                            }
+                        }else{?>
+                            <p><?php _e('There are no fields to export.', 'woooe'); ?></p><?php
+                        }?>
+                    </section>
+                </td>
+            </tr><?php
+        }
+        
+        /*
+         * Save the settings
+         */
+        function save(){
+            
+            global $current_section, $current_tab, $woooe;
+            
+            if('woooe' === $current_tab){
+            
+                if( ('advanced' === $current_section) ){
+
+                    $field_ids      = !empty($_POST['woooe_field_ids']) ? $_POST['woooe_field_ids'] : array();
+                    $field_names    = !empty($_POST['woooe_field_names']) ? $_POST['woooe_field_names'] : array();
+
+                    $reorder_settings = array_combine($field_ids, $field_names);
+                    $update = update_option('woooe_reorder_rename', $reorder_settings, false);
+                }
+                
+                if('general' === $current_section){
+                    
+                    $reorder_settings = get_option('woooe_reorder_rename', array());
+                    $post_values = !empty($_POST) ? ($_POST) : array();
+                    
+                    $fields_to_export = WOOOE_Data_Handler::fields_to_export(true);
+                    $total_fields = wp_list_pluck($fields_to_export, 'name', 'id');
+
+                    $updated_fields_to_export = array_intersect_key($total_fields, $post_values);
+                    $to_add = array_diff_key($updated_fields_to_export, $reorder_settings);
+                    $to_remove = array_diff_key($reorder_settings, $updated_fields_to_export);
+                    
+                    foreach($to_add as $k=>$v){
+                        $reorder_settings[$k] = $v;
+                    }
+
+                    foreach($to_remove as $k=>$v){
+                        unset($reorder_settings[$k]);
+                    }
+                    
+                    $update = update_option('woooe_reorder_rename', $reorder_settings, false);
+                }            
+            }
         }
     }
 }

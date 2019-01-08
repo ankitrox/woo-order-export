@@ -50,7 +50,7 @@ if(!class_exists('WOOOE_Data_Handler')){
         /*
          * Returns the fields which needs to be exported.
          */
-        static function fields_to_export(){
+        static function fields_to_export($exportable_fields = false){
 
             global $woooe;
 
@@ -58,8 +58,12 @@ if(!class_exists('WOOOE_Data_Handler')){
 
             foreach( $woooe->settings['general'] as $value ){
 
-                if( isset($value['export_field']) && 'yes' == $value['export_field'] && 'yes' == woocommerce_settings_get_option($value['id'], 'no') ){
-                    array_push($fields, $value);
+                if( isset($value['export_field']) && 'yes' == $value['export_field'] ){
+                    if( !$exportable_fields && 'yes' == woocommerce_settings_get_option($value['id'], 'no') ){
+                        array_push($fields, $value);
+                    }elseif ($exportable_fields) {
+                        array_push($fields, $value);
+                    }
                 }
             }
 

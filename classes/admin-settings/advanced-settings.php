@@ -26,6 +26,28 @@ $export_fashion = array(
 
 );
 
-$fields = array_merge($order_statuses_fields, $export_fashion);
+$reorder_fields = array(
+
+        array(
+            'name'     => __( 'Reorder and rename fields', 'woooe' ),
+            'type'     => 'title',
+            'desc'     => '',
+            'id'       => 'woooe_reorder'
+        ),
+    
+        array(
+            'type'     => 'woooe_reorder',
+            'id'       => 'woooe_reorder_fields'
+        ),
+
+        array(
+             'type' => 'sectionend',
+             'id' => 'woooe_reorder'
+        ),
+
+);
+
+
+$fields = array_merge($order_statuses_fields, $export_fashion, $reorder_fields);
 
 return apply_filters( 'woooe_settings_fields_advanced', $fields );
