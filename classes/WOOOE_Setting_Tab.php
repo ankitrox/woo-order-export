@@ -39,12 +39,14 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
             global $current_section, $woooe;
 
             if(in_array( $current_section, array('', 'general')) ){
-                woocommerce_admin_fields( $woooe->settings['general'] );
+                woocommerce_admin_fields( $woooe->get_settings('general') );
             }
 
             if( 'advanced' == $current_section ){
-                woocommerce_admin_fields( $woooe->settings['advanced'] );
+                woocommerce_admin_fields( $woooe->get_settings('advanced') );
             }
+            
+            do_action('woooe_settings_section');
         }
 
         /*
@@ -54,11 +56,11 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
             global $current_section, $woooe;
             
             if(in_array( $current_section, array('', 'general')) ){
-                woocommerce_update_options( $woooe->settings['general'] );
+                woocommerce_update_options( $woooe->get_settings('general') );
             }
             
             if( 'advanced' == $current_section ){
-                woocommerce_update_options( $woooe->settings['advanced'] );
+                woocommerce_update_options( $woooe->get_settings('advanced') );
             }
         }
 
@@ -144,12 +146,12 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
                 </td>
             </tr><?php
         }
-        
+
         /*
          * Save the settings
          */
         function save(){
-            
+
             global $current_section, $current_tab, $woooe;
             
             if('woooe' === $current_tab){

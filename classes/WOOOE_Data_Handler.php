@@ -57,7 +57,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
             $fields = array();
             $reorder_settings = get_option('woooe_reorder_rename', array());
 
-            foreach( $woooe->settings['general'] as $value ){
+            foreach( $woooe->get_settings('general') as $value ){
 
                 if( isset($value['export_field']) && 'yes' == $value['export_field'] ){
                     if( !$exportable_fields && 'yes' == woocommerce_settings_get_option($value['id'], 'no') ){
@@ -67,7 +67,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
                     }
                 }
             }
-            
+
             if( !empty($fields) && !empty($reorder_settings) && !$exportable_fields ){
                 
                 $temp_fields = $fields; //Temp holding variable

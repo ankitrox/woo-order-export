@@ -19,6 +19,7 @@ if( !class_exists('WOOOE_Report_Handler', false) ){
             try{
 
                 if(WOOOE_Data_Handler::validate()){
+                    include_once WC_ABSPATH . 'includes/admin/wc-admin-functions.php';
                     WOOOE_Data_Handler::export_data();
                     self::return_report_status();
                 }

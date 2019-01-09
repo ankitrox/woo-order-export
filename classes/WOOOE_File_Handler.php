@@ -100,7 +100,10 @@ if(!class_exists('WOOOE_File_Handler', false)){
          * Get valid download filename
          */
         static function filename(){
-            
+            if ( ! class_exists( 'WC_Admin_Settings', false ) ) {
+                include( dirname( WC_PLUGIN_FILE ) . '/includes/admin/class-wc-admin-settings.php' );
+            }
+
             $filename   =   woocommerce_settings_get_option('woooe_field_export_filename', 'orderexport.csv');
             $filename   =   !empty($filename) ? $filename : 'orderexport';
             $pathinfo   =   pathinfo($filename);
@@ -123,20 +126,18 @@ if(!class_exists('WOOOE_File_Handler', false)){
 
             if( !empty($wooe_filename) && !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))
                 && wp_verify_nonce($wooe_download, 'woooe_download')
-            )
-            {
+            ){
                 $charset    =   get_option('blog_charset');
                 $csv_file   =   path_join( self::upload_dir(), $wooe_filename.'.csv');
 
                 header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
+                header('Content-Type: application/csv');
                 header("Content-Disposition: attachment; filename=". self::filename());
                 header("Expires: 0");
                 header('Cache-Control: must-revalidate');
                 header('Content-Encoding: '. $charset);
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($csv_file));
-                flush();
                 readfile($csv_file);
                 unlink($csv_file);
                 exit;

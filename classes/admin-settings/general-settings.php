@@ -1,5 +1,6 @@
 <?php
-return apply_filters( 'woooe_settings_fields_general', array(
+
+$filename_section = array(
 
         array(
             'name'     => __( 'Enter export filename', 'woooe' ),
@@ -18,14 +19,11 @@ return apply_filters( 'woooe_settings_fields_general', array(
              'type' => 'sectionend',
              'id' => 'woooe_filename'
         ),
-    
-        array(
-            'name'     => __( 'Choose fields to export', 'woooe' ),
-            'type'     => 'title',
-            'desc'     => '',
-            'id'       => 'woooe_title_sm'
-        ),
 
+);
+
+$fields = apply_filters('woooe_exportable_fields', array(
+    
         array(
             'name'     => __( 'Order ID', 'woooe' ),
             'type'     => 'checkbox',
@@ -82,10 +80,30 @@ return apply_filters( 'woooe_settings_fields_general', array(
             'class' => 'WOOOE_Fetch_Order'
         ),
 
+));
+
+$fields_section_start = array(
+        array(
+            'name'     => __( 'Choose fields to export', 'woooe' ),
+            'type'     => 'title',
+            'desc'     => '',
+            'id'       => 'woooe_title_sm'
+        ),
+
+);
+
+$fields_section_end = array(
+
         array(
              'type' => 'sectionend',
              'id' => 'woooe_title_sm'
         ),
+
+);
+
+$fields_section = array_merge($fields_section_start, $fields, $fields_section_end);
+
+$export_duration = array(
 
         array(
             'name'     => __( 'Select export duration & Export', 'woooe' ),
@@ -122,4 +140,6 @@ return apply_filters( 'woooe_settings_fields_general', array(
              'id' => 'woooe_export_duration'
         ),
 
-));
+);
+
+return apply_filters( 'woooe_settings_fields_general', array_merge($filename_section, $fields_section, $export_duration) );

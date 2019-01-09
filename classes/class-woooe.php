@@ -67,16 +67,28 @@ if( !class_exists('WOOOE', false) ){
             add_action('woocommerce_get_settings_pages', function(){new WOOOE_Setting_Tab();});
             add_action('wp_ajax_woooe_get_report', array('WOOOE_Report_Handler', 'fetch_report_stats') );
             add_action('wp_ajax_woooe_fetch_report', array('WOOOE_Report_Handler', 'fetch_report') );
-            add_action('init', array('WOOOE_File_Handler', 'download'));
-            add_action('init', array($this, 'init'), 1);
+            add_action('init', array('WOOOE_File_Handler', 'download'),11);
         }
-        
+
         /*
-         * Init function
+         * Get settings
          */
-        function init(){
-            $this->settings['general']      =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/general-settings.php';
-            $this->settings['advanced']     =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/advanced-settings.php';
+        function get_settings($context = 'general'){
+
+            $setting = '';
+
+            switch($context){
+                
+                case 'general':
+                    $setting = include trailingslashit(WOOOE_BASE).'classes/admin-settings/general-settings.php';
+                break;
+            
+                case 'advanced':
+                    $setting = include trailingslashit(WOOOE_BASE).'classes/admin-settings/advanced-settings.php';
+                break;
+            }
+
+            return $setting;
         }
 
         /*
