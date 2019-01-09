@@ -9,7 +9,7 @@ if(!defined('ABSPATH')){
  */
 if( !trait_exists('WOOOE_Trait_GetValue', false) ){
 
-    trait WOOOE_Trait_GetValue {
+    trait WOOOE_Trait_GetValue{
 
         //Creates instance and stores in property.
         static function instance($order_id){

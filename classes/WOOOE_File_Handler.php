@@ -1,11 +1,11 @@
 <?php
 if(!defined('ABSPATH')){
-    exit;
+	exit;
 }
 
-if(!class_exists('WOOOE_File_Handler')){
+if(!class_exists('WOOOE_File_Handler', false)){
 
-    class WOOOE_File_Handler {
+    class WOOOE_File_Handler{
 
         /*
          * Directory name where exported files will be stored.
@@ -16,7 +16,7 @@ if(!class_exists('WOOOE_File_Handler')){
          * Extension for file.
          */
         static $extension = '.csv';
-        
+
         /*
          * File handler
          */
@@ -29,6 +29,13 @@ if(!class_exists('WOOOE_File_Handler')){
 
             $upload_directory = wp_upload_dir();
 
+            /*
+             * If directory is already present, then do not attempt to create.
+             */
+            if(file_exists(trailingslashit($upload_directory['basedir']). self::$dir.'/')){
+                return;
+            }
+
             if(self::upload_dir()){
                 if( !mkdir( trailingslashit($upload_directory['basedir']). self::$dir.'/' ) ){
                     throw new Exception( __('Cannot create directory inside uploads folder.', 'woooe') );
@@ -37,12 +44,12 @@ if(!class_exists('WOOOE_File_Handler')){
                 throw new Exception( __('Cannot create directory inside uploads folder.', 'woooe') );
             }
         }
-        
+
         /*
          * Get upload directory for order export plugin
          */
         static function upload_dir(){
-            
+
             $upload_directory = wp_upload_dir();
             
             if( empty($upload_directory['error']) && isset($upload_directory['basedir']) && is_writable($upload_directory['basedir']) ){
@@ -78,12 +85,12 @@ if(!class_exists('WOOOE_File_Handler')){
 
             return self::$file;
         }
-        
+
         /*
          * Appends the data to the file.
          */
         static function add_row($data){
-            
+
             if( count($data) === count(WOOOE_Data_Handler::fields_to_export()) ){
                 $string_length = fputcsv(self::prepare_file(), $data);
             }

@@ -11,37 +11,36 @@
  *
  * @package WooCommerce
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ){
 	exit; // Exit if accessed directly.
 }
 
 if( !defined( 'WOOOE_BASE' ) ){
-    define( 'WOOOE_BASE', dirname(__FILE__) );
+	define( 'WOOOE_BASE', dirname(__FILE__) );
 }
 
 if( !defined( 'WOOOE_BASENAME' ) ){
-    define( 'WOOOE_BASENAME', plugin_basename(__FILE__) );
+	define( 'WOOOE_BASENAME', plugin_basename(__FILE__) );
 }
 
 if( !defined( 'WOOOE_BASE_FILE' ) ){
-    define( 'WOOOE_BASE_FILE', __FILE__ );
+	define( 'WOOOE_BASE_FILE', __FILE__ );
 }
 
 if( !defined( 'WOOOE_BASE_URL' ) ){
-    define( 'WOOOE_BASE_URL', plugins_url( basename( dirname(__FILE__) ) ) );
+	define( 'WOOOE_BASE_URL', plugins_url( basename( dirname(__FILE__) ) ) );
 }
 
 //Include main class
-if( !class_exists('WOOOE') ) {
-    include_once dirname( __FILE__ ) . '/lib/functions.php';
-    include_once dirname( __FILE__ ) . '/classes/class-woooe.php';
+if( !class_exists('WOOOE', false) ){
+	include_once dirname( __FILE__ ) . '/lib/functions.php';
+	include_once dirname( __FILE__ ) . '/classes/class-woooe.php';
 }
 
 function _WOOOE(){
-    //return WOOOE::instance();
-    $GLOBALS['woooe'] = WOOOE::instance();
+    return WOOOE::instance();
 }
-add_action('woocommerce_init', '_WOOOE', 0);
 
-register_activation_hook( __FILE__, array('WOOOE_File_Handler', 'create_folder') );
+$GLOBALS['woooe'] = _WOOOE();
+
+register_activation_hook(__FILE__, array('WOOOE_File_Handler', 'create_folder'));

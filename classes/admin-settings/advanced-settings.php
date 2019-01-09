@@ -9,7 +9,7 @@ $export_fashion = array(
             'desc'     => '',
             'id'       => 'woooe_export_style'
         ),
-    
+
         array(
             'type'     => 'radio',
             'options'  => array(
@@ -34,7 +34,7 @@ $reorder_fields = array(
             'desc'     => '',
             'id'       => 'woooe_reorder'
         ),
-    
+
         array(
             'type'     => 'woooe_reorder',
             'id'       => 'woooe_reorder_fields'
@@ -44,9 +44,7 @@ $reorder_fields = array(
              'type' => 'sectionend',
              'id' => 'woooe_reorder'
         ),
-
 );
-
 
 $fields = array_merge($order_statuses_fields, $export_fashion, $reorder_fields);
 

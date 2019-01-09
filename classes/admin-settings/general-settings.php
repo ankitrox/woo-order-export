@@ -1,5 +1,4 @@
 <?php
-
 return apply_filters( 'woooe_settings_fields_general', array(
 
         array(

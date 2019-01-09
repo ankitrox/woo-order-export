@@ -3,7 +3,7 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-if(!class_exists('WOOOE_Fetch_Order')){
+if(!class_exists('WOOOE_Fetch_Order', false)){
 
     class WOOOE_Fetch_Order {
 

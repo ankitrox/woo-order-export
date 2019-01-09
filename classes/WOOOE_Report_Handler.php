@@ -4,7 +4,7 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-if( !class_exists('WOOOE_Report_Handler') ){
+if( !class_exists('WOOOE_Report_Handler', false) ){
 
     /*
      * Report Handling Class
@@ -74,7 +74,6 @@ if( !class_exists('WOOOE_Report_Handler') ){
 
             wp_send_json_success($args);
         }
-
     }
 }
 

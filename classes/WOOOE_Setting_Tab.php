@@ -3,9 +3,9 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-if( !class_exists('WOOE_Setting_Tab') ){
+if( !class_exists('WOOE_Setting_Tab', false) ){
 
-    class WOOOE_Setting_Tab extends WC_Settings_Page {
+    class WOOOE_Setting_Tab extends WC_Settings_Page{
 
         //Constructor
         function __construct() {

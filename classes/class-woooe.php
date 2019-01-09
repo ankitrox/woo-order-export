@@ -1,12 +1,13 @@
 <?php
 //prevent direct access of file.
-if( !defined('ABSPATH') ) {
+
+if( !defined('ABSPATH') ){
     exit;
 }
 
-if( !class_exists('WOOOE') ){
+if( !class_exists('WOOOE', false) ){
 
-    class WOOOE {
+    class WOOOE{
 
         static $_instance;
 
@@ -22,15 +23,15 @@ if( !class_exists('WOOOE') ){
 
         //constructor
         protected function __construct() {
+
             spl_autoload_register(array($this, 'autoload'));
-            $this->settings['general']      =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/general-settings.php';
-            $this->settings['advanced']     =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/advanced-settings.php';
             $this->hooks();
         }
 
         //Prevent cloning and unserialization.
         private function __clone() {}
         private function __wakeup() {}
+
         /*
          * Instantiate the class
          */
@@ -47,10 +48,9 @@ if( !class_exists('WOOOE') ){
          * SPL Autoloader Function
          */
         function autoload($class_name){
-
             //Load trait in advance.
             include trailingslashit(WOOOE_BASE). 'classes/controllers/WOOOE_Trait_GetValue.php';
-            
+
             if( strstr($class_name, 'WOOOE_Fetch') !== FALSE ){
                 include trailingslashit(WOOOE_BASE). 'classes/controllers/'. $class_name .'.php';
             }elseif( strstr($class_name, 'WOOOE') !== FALSE ){
@@ -68,8 +68,17 @@ if( !class_exists('WOOOE') ){
             add_action('wp_ajax_woooe_get_report', array('WOOOE_Report_Handler', 'fetch_report_stats') );
             add_action('wp_ajax_woooe_fetch_report', array('WOOOE_Report_Handler', 'fetch_report') );
             add_action('init', array('WOOOE_File_Handler', 'download'));
+            add_action('init', array($this, 'init'), 1);
         }
         
+        /*
+         * Init function
+         */
+        function init(){
+            $this->settings['general']      =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/general-settings.php';
+            $this->settings['advanced']     =   include_once trailingslashit(WOOOE_BASE).'classes/admin-settings/advanced-settings.php';
+        }
+
         /*
          * Add scripts and styles.
          */
@@ -79,6 +88,5 @@ if( !class_exists('WOOOE') ){
             wp_enqueue_style('jquery-ui-datepicker');
             wp_enqueue_style('woooe-style', trailingslashit(WOOOE_BASE_URL).'assets/css/woooe.css', array());
         }
-
     }
 }

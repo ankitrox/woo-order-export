@@ -3,7 +3,7 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-if(!class_exists('WOOOE_Data_Handler')){
+if(!class_exists('WOOOE_Data_Handler', false)){
 
     class WOOOE_Data_Handler {
 

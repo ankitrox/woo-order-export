@@ -4,7 +4,7 @@ if( !defined('ABSPATH') ){
     exit;
 }
 
-if(!class_exists('WOOOE_Fields_Loader')){
+if(!class_exists('WOOOE_Fields_Loader', false)){
 
     class WOOOE_Fields_Loader {
 
