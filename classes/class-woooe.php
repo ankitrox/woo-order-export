@@ -68,6 +68,20 @@ if( !class_exists('WOOOE', false) ){
             add_action('wp_ajax_woooe_get_report', array('WOOOE_Report_Handler', 'fetch_report_stats') );
             add_action('wp_ajax_woooe_fetch_report', array('WOOOE_Report_Handler', 'fetch_report') );
             add_action('init', array('WOOOE_File_Handler', 'download'),11);
+            add_action('init', array($this, 'init'),1);
+        }
+
+        /*
+         * Init function of plugin
+         */
+        function init(){
+
+            /*
+             * Include woocommerce functions if they are not present.
+             */
+            if(!function_exists('woocommerce_settings_get_option')){
+                include_once WC_ABSPATH . 'includes/admin/wc-admin-functions.php';
+            }
         }
 
         /*

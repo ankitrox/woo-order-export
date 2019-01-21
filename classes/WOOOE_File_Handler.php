@@ -121,8 +121,8 @@ if(!class_exists('WOOOE_File_Handler', false)){
          */
         static function download(){
 
-            $wooe_download = filter_input(INPUT_GET, 'woooe_download', FILTER_DEFAULT);
-            $wooe_filename = filter_input(INPUT_GET, 'filename', FILTER_DEFAULT);
+            $wooe_download = empty($_GET['woooe_download']) ? '' : $_GET['woooe_download'];
+            $wooe_filename = empty($_GET['filename']) ? '' : $_GET['filename'];
 
             if( !empty($wooe_filename) && !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))
                 && wp_verify_nonce($wooe_download, 'woooe_download')

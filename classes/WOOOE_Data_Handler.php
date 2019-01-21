@@ -10,7 +10,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
         /*
          * Chunk size - number of records to fetch at single run.
          */
-        static $chunk_size =3;
+        static $chunk_size =1;
 
         /*
          * Holds the current query
@@ -33,17 +33,18 @@ if(!class_exists('WOOOE_Data_Handler', false)){
         static function get_chunk_size(){
             return apply_filters('woooe_chunk_size', self::$chunk_size);
         }
-        
+
         /*
          * Gets the current instance of query.
          */
         static function get_current_query(){
 
-            if(!(self::$query instanceof WP_Query)){
-                $args = self::get_report_args();
-                self::$query = new WP_Query($args);
-            }
-            
+            /*
+             * For cron requests, refresh report args
+             */
+            $args = self::get_report_args();
+            self::$query = new WP_Query($args);
+
             return self::$query;
         }
 
@@ -111,10 +112,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
          */
         static function get_report_args(){
 
-            /*
-             * Arguments for fetching.
-             */
-
+            //Arguments for fetching.
             $args = array(
                         'post_type'=>'shop_order',
                         'posts_per_page'=> self::get_chunk_size(),
@@ -128,7 +126,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
                                     'before' => self::get_request_params('endDate'),
                                     'inclusive' => true,
                                 );
-            
+
             return apply_filters('woooe_report_args', $args);
         }
 
@@ -137,22 +135,17 @@ if(!class_exists('WOOOE_Data_Handler', false)){
          */
         static function get_request_params($return = null){
 
-            /*
-             * Requested return value should be scalar
-             */
+            //Requested return value should be scalar
             if(!is_scalar($return)){
                 return array();
             }
-            
-            $startDate  = filter_input(INPUT_POST, 'startDate');
-            $endDate    = filter_input(INPUT_POST, 'endDate');
-            $offset     = filter_input(INPUT_POST, 'offset');
-            $total_records  = filter_input(INPUT_POST, 'total_records');
-            $chunk_size = filter_input(INPUT_POST, 'chunk_size');
-            $timestamp  = filter_input(INPUT_POST, 'timestamp');
-            //Default offset is 1
-            $offset = !empty($offset) ? $offset : 0;
-            $timestamp = !empty($timestamp) ? $timestamp : time();
+
+            $startDate  = empty($_POST['startDate']) ? '' : $_POST['startDate'];
+            $endDate    = empty($_POST['endDate']) ? '' : $_POST['endDate'];
+            $offset     = empty($_POST['offset']) ? 0 : $_POST['offset'];
+            $total_records  = empty($_POST['total_records']) ? 0 : $_POST['total_records'];
+            $chunk_size = empty($_POST['chunk_size']) ? self::get_chunk_size() : $_POST['chunk_size'];
+            $timestamp  = empty($_POST['timestamp']) ? time() : $_POST['timestamp'];
 
             $return_data = compact('startDate', 'endDate', 'offset', 'chunk_size', 'total_records', 'timestamp');
 
