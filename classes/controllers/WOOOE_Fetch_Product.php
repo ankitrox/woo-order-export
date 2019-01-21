@@ -23,10 +23,9 @@ if(!class_exists('WOOOE_Fetch_Product', false)){
         function __construct($order_id) {
 
             parent::__construct($order_id);
-            $this->properties = apply_filters('woooe_product_properties', array('product_name', 'product_categories'));
+            $this->properties = apply_filters('woooe_product_properties', array('product_name', 'product_categories', 'product_sku'));
             $this->set_value();
         }
-
 
         /*
          * Gets product names for an order.
@@ -34,7 +33,7 @@ if(!class_exists('WOOOE_Fetch_Product', false)){
         function product_name(){
 
             $product_names = array();
-            
+
             $line_items = $this->items;
 
             foreach($line_items as $item){
@@ -55,14 +54,46 @@ if(!class_exists('WOOOE_Fetch_Product', false)){
             foreach($line_items as $item){
 
                 $product = $item->get_product();
+
+                if(empty($product)){
+                    continue;
+                }
+
                 $product_cats = wp_get_object_terms( $product->get_id(), 'product_cat', array('fields'=>'names') );
 
                 if(!empty($product_cats) && !is_wp_error($product_cats)){
-                    $categories = implode(', ', $product_cats);
+                    $product_cats = implode(', ', $product_cats);
+                    array_push($categories, $product_cats);
                 }
             }
 
             return $categories;
+        }
+        
+        /*
+         * Get product SKU
+         */
+        function product_sku(){
+            
+            $sku = array();
+
+            if(!wc_product_sku_enabled()){
+                return $sku;
+            }
+            
+            foreach($this->items as $item){
+                
+                $product = $item->get_product();
+
+                if(empty($product)){
+                    continue;
+                }
+
+                $product_sku = $product->get_sku();
+                array_push($sku, $product_sku);
+            }
+            
+            return $sku;
         }
     }
 }
