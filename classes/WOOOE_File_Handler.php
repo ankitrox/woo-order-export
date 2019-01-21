@@ -115,18 +115,35 @@ if(!class_exists('WOOOE_File_Handler', false)){
             
             return $pathinfo['filename'].'.csv';
         }
-        
+
+        /*
+         * Returns download URL for file
+         */
+        static function download_url(){
+
+            if( defined('NONCE_SALT') ){
+                $encrypted = openssl_encrypt(WOOOE_Data_Handler::get_request_params('timestamp'), 'AES-128-CTR', NONCE_SALT);
+                $url = add_query_arg(array( 'woooe_download'=> $encrypted ), admin_url());
+                
+                if(wp_doing_cron()){
+                    $url = add_query_arg(array('dnd'=>1), $url);
+                }
+                
+                return $url;
+            }
+        }
+
         /*
          * Download the csv file.
          */
         static function download(){
 
-            $wooe_download = empty($_GET['woooe_download']) ? '' : $_GET['woooe_download'];
-            $wooe_filename = empty($_GET['filename']) ? '' : $_GET['filename'];
+            $wooe_download  = empty($_GET['woooe_download']) ? '' : $_GET['woooe_download'];
+            $wooe_delete    = empty($_GET['dnd']) ? false : true;
+            $wooe_filename  = openssl_decrypt($wooe_download, 'AES-128-CTR', NONCE_SALT);
 
-            if( !empty($wooe_filename) && !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))
-                && wp_verify_nonce($wooe_download, 'woooe_download')
-            ){
+            if( !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))){
+
                 $charset    =   get_option('blog_charset');
                 $csv_file   =   path_join( self::upload_dir(), $wooe_filename.'.csv');
 
@@ -139,7 +156,12 @@ if(!class_exists('WOOOE_File_Handler', false)){
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($csv_file));
                 readfile($csv_file);
-                unlink($csv_file);
+
+                //Do not delete if request is set.
+                if(!$wooe_delete){
+                    unlink($csv_file);
+                }
+
                 exit;
             }
         }

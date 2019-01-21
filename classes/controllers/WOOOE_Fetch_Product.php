@@ -23,7 +23,7 @@ if(!class_exists('WOOOE_Fetch_Product', false)){
         function __construct($order_id) {
 
             parent::__construct($order_id);
-            $this->properties = apply_filters('woooe_product_properties', array('product_name'));
+            $this->properties = apply_filters('woooe_product_properties', array('product_name', 'product_categories'));
             $this->set_value();
         }
 
@@ -34,14 +34,35 @@ if(!class_exists('WOOOE_Fetch_Product', false)){
         function product_name(){
 
             $product_names = array();
-
-            $line_items = $this->order->get_items( apply_filters( 'woocommerce_admin_order_item_types', 'line_item' ) );
+            
+            $line_items = $this->items;
 
             foreach($line_items as $item){
                 array_push($product_names, $item->get_name());
             }
-            
+
             return $product_names;
+        }
+
+        /*
+         * Get product categories
+         */
+        function product_categories(){
+
+            $categories = array();
+            $line_items = $this->items;
+
+            foreach($line_items as $item){
+
+                $product = $item->get_product();
+                $product_cats = wp_get_object_terms( $product->get_id(), 'product_cat', array('fields'=>'names') );
+
+                if(!empty($product_cats) && !is_wp_error($product_cats)){
+                    $categories = implode(', ', $product_cats);
+                }
+            }
+
+            return $categories;
         }
     }
 }

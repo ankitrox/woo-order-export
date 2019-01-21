@@ -99,7 +99,7 @@ if( !class_exists('WOOOE_Report_Handler', false) ){
                 'endDate'=> WOOOE_Data_Handler::get_request_params('endDate'),
                 'total_records' => $query->found_posts,
                 'offset' => WOOOE_Data_Handler::get_request_params('offset'),
-                'fileurl' => add_query_arg(array( 'woooe_download'=> wp_create_nonce('woooe_download'), 'filename'=>WOOOE_Data_Handler::get_request_params('timestamp')), admin_url())
+                'fileurl' => WOOOE_File_Handler::download_url()
             );
             
             return $args;

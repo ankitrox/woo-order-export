@@ -73,6 +73,14 @@ $fields = apply_filters('woooe_exportable_fields', array(
         ),
 
         array(
+            'name'     => __( 'Product Categories', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_product_categories',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Product'
+        ),
+
+        array(
             'name'     => __( 'Order Status', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_order_status',

@@ -24,6 +24,7 @@ if(!class_exists('WOOOE_Fetch_Order', false)){
             $this->order_number = $this->order->get_order_number();
             $this->order_status = $this->order->get_status();
             $this->order_date = $this->order->get_date_created();
+            $this->items = $this->order->get_items( apply_filters( 'woocommerce_admin_order_item_types', 'line_item' ) );
         }
     }
 }
