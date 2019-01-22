@@ -56,11 +56,11 @@ jQuery(document).ready(function(){
                     ++response.data.offset;
                     new getReport(response.data);
                 }
-            
-            }
-            
-            if( remaining_records <= 0 ){
-                jQuery('body').trigger('woooe_process_completed', response);
+
+                if( remaining_records <= 0 ){
+                    jQuery('body').trigger('woooe_process_completed', response);
+                }
+
             }
         });
     };
