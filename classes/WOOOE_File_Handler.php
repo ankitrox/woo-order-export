@@ -43,6 +43,32 @@ if(!class_exists('WOOOE_File_Handler', false)){
             }else{
                 throw new Exception( __('Cannot create directory inside uploads folder.', 'woooe') );
             }
+
+            if(wp_is_writable(self::upload_dir())){
+
+                @file_put_contents( self::upload_dir() . '.htaccess', self::htaccess_rules() );
+
+		// Top level blank index.php
+		if ( ! file_exists( self::upload_dir() . 'index.php' ) && wp_is_writable( self::upload_dir() ) ) {
+			@file_put_contents( self::upload_dir() . 'index.php', '<?php' . PHP_EOL . '// Silence is golden.' );
+		}                
+            }
+        }
+
+        /*
+         * Htaccess rules to prevent direct access to directory and files.
+         */
+        static function htaccess_rules(){
+
+            // Prevent directory browsing and direct access to all files, except images
+            $rules = "Options -Indexes\n";
+            $rules .= "deny from all\n";
+            $rules .= "<FilesMatch '\.(jpg|png|gif|mp3|ogg)$'>\n";
+                    $rules .= "Order Allow,Deny\n";
+                    $rules .= "Allow from all\n";
+            $rules .= "</FilesMatch>\n";
+
+            return apply_filters( 'woooe_htaccess_rules', $rules );
         }
 
         /*

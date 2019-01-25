@@ -89,7 +89,7 @@ $fields = apply_filters('woooe_exportable_fields', array(
         ),
 
         array(
-            'name'     => __( 'Customer Email', 'woooe' ),
+            'name'     => __( 'Customer\'s Billing Email', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_customer_email',
             'export_field' => 'yes',
