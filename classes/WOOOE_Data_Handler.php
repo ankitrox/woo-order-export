@@ -10,7 +10,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
         /*
          * Chunk size - number of records to fetch at single run.
          */
-        static $chunk_size =1;
+        static $chunk_size =10;
 
         /*
          * Holds the current query
