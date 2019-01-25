@@ -24,6 +24,7 @@
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-jshint": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
-    "grunt-contrib-watch": "^1.1.0"
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-wp-i18n": "^1.0.3"
   }
 }

@@ -39,9 +39,28 @@ module.exports = function(grunt) {
           }
       },
       
+      makepot: {
+        
+          woooeexport: {
+              options: {
+                  potFilename: 'woooe.pot',
+                  domainPath: '/languages',
+                  include: [
+                      'lib/.*',
+                      'classes/.*',
+                      'classes/controllers/.*',
+                      'classes/admin-settings/.*',
+                      'views/.*'
+                  ],
+                  mainFile: 'woo-order-export.php',
+                  type: 'wp-plugin'
+              }
+          }  
+      },
+      
       watch: {
           files: ['<%= jshint.files %>'],
-          tasks:['jshint', 'uglify', 'cssmin']
+          tasks:['jshint', 'uglify', 'cssmin', 'makepot']
       }
       
    });
@@ -51,6 +70,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks( 'grunt-wp-i18n' );
 
     // Default task(s).
     grunt.registerTask('default', ['jshint, uglify', 'cssmin']);
