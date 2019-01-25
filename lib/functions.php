@@ -123,3 +123,15 @@ if(!function_exists('woooe_format_price')){
         return $price;
     }
 }
+
+/*
+ * Show add-on purchase notice.
+ */
+
+if(!function_exists('woooe_addon_notice')){
+    
+    function woooe_addon_notice(){
+        require trailingslashit(WOOOE_BASE). 'views/woooe-addon.php';
+    }
+    add_action('admin_notices', 'woooe_addon_notice');
+}
