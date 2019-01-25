@@ -122,13 +122,14 @@ if(!class_exists('WOOOE_File_Handler', false)){
         static function download_url(){
 
             if( defined('NONCE_SALT') ){
-                $encrypted = openssl_encrypt(WOOOE_Data_Handler::get_request_params('timestamp'), 'AES-128-CTR', NONCE_SALT);
-                $url = add_query_arg(array( 'woooe_download'=> $encrypted ), admin_url());
+                $enc_key = openssl_digest(NONCE_SALT, 'SHA256', TRUE);
+                $encrypted = @openssl_encrypt(WOOOE_Data_Handler::get_request_params('timestamp'), 'AES-128-CTR', $enc_key);
+                $url = add_query_arg(array( 'woooe_download'=> ($encrypted) ), admin_url());
                 
                 if(wp_doing_cron()){
                     $url = add_query_arg(array('dnd'=>1), $url);
                 }
-                
+
                 return $url;
             }
         }
@@ -138,10 +139,11 @@ if(!class_exists('WOOOE_File_Handler', false)){
          */
         static function download(){
 
-            $wooe_download  = empty($_GET['woooe_download']) ? '' : $_GET['woooe_download'];
+            $wooe_download  = empty($_GET['woooe_download']) ? '' : ($_GET['woooe_download']);
             $wooe_delete    = empty($_GET['dnd']) ? false : true;
-            $wooe_filename  = openssl_decrypt($wooe_download, 'AES-128-CTR', NONCE_SALT);
-
+            $enc_key        = openssl_digest(NONCE_SALT, 'SHA256', TRUE);
+            $wooe_filename  = @openssl_decrypt($wooe_download, 'AES-128-CTR', $enc_key);
+            
             if( !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))){
 
                 $charset    =   get_option('blog_charset');

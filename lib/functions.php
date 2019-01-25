@@ -104,3 +104,22 @@ if(!function_exists('woooe_rebuild_reordering')){
     }
     add_action('woooe_rebuild_reordering', 'woooe_rebuild_reordering');
 }
+
+/*
+ * Format prices
+ */
+if(!function_exists('woooe_format_price')){
+    
+    function woooe_format_price($price = '', $currency = ''){
+        
+        $price = wc_price($price, array('currency'=>$currency));
+        
+        //Strip tags from returned value
+        $price = strip_tags($price);
+        
+        //Decode html entities so as to view currency symbols properly
+        $price = html_entity_decode($price);
+        
+        return $price;
+    }
+}

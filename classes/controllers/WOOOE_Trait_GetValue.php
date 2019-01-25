@@ -20,12 +20,24 @@ if( !trait_exists('WOOOE_Trait_GetValue', false) ){
             return self::$instance[$order_id];
         }
         
+        /*
+         * Sets values for properties.
+         */
         function set_value(){
+
             foreach($this->properties as $property){
-                $this->$property = $this->$property();
+
+                if(method_exists($this, $property)){
+                    $this->$property = $this->$property();
+                }elseif( in_array($property, $this->properties) ){
+                    $this->$property = apply_filters('woooe_call_fallback', '', $property, $this);
+                }
             }
         }
 
+        /*
+         * Gets property value of an object
+         */
         function get_value($property){
 
             $value = null;

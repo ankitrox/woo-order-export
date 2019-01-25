@@ -47,7 +47,39 @@ $fields = apply_filters('woooe_exportable_fields', array(
             'export_field' => 'yes',
             'class' => 'WOOOE_Fetch_Order'
         ),
-    
+
+        array(
+            'name'     => __( 'Order Total', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_total',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
+        array(
+            'name'     => __( 'Order Total Tax', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_total_tax',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
+        array(
+            'name'     => __( 'Order Shipping Total', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_shipping_total',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
+        array(
+            'name'     => __( 'Order Shipping Tax', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_shipping_tax',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
         array(
             'name'     => __( 'Customer Name', 'woooe' ),
             'type'     => 'checkbox',
@@ -68,22 +100,6 @@ $fields = apply_filters('woooe_exportable_fields', array(
             'name'     => __( 'Product Name', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_product_name',
-            'export_field' => 'yes',
-            'class' => 'WOOOE_Fetch_Product'
-        ),
-
-        array(
-            'name'     => __( 'Product Categories', 'woooe' ),
-            'type'     => 'checkbox',
-            'id'       => 'woooe_field_product_categories',
-            'export_field' => 'yes',
-            'class' => 'WOOOE_Fetch_Product'
-        ),
-
-        array(
-            'name'     => __( 'Product SKU', 'woooe' ),
-            'type'     => 'checkbox',
-            'id'       => 'woooe_field_product_sku',
             'export_field' => 'yes',
             'class' => 'WOOOE_Fetch_Product'
         ),

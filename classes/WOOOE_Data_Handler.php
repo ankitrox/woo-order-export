@@ -44,7 +44,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
              */
             $args = self::get_report_args();
             self::$query = new WP_Query($args);
-
+            
             return self::$query;
         }
 

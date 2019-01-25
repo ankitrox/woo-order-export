@@ -78,7 +78,7 @@ if(!class_exists('WOOOE_Fields_Loader', false)){
                 $row = array();
                 
                 foreach($this->fields as $field){
-                    
+
                     //Check if it has class
                     if( isset($field['class']) ){
                         
@@ -119,13 +119,13 @@ if(!class_exists('WOOOE_Fields_Loader', false)){
                     }, $data);
                     array_push($records, $getData);
                 break;
-            
+
                 case 'separate':
                     foreach($product_names as $key=>$product_name){
 
                         $getData = array_map(function($element, $key){
 
-                            return is_array($element) ? $element[$key] : $element;
+                            return is_array($element) ? ( isset($element[$key]) ? $element[$key] : '' ) : $element;
 
                         }, $data, array_fill(0, count($data), $key));
 
