@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Order Export - WooCommerce
+ * Plugin Name: WooCommerce Simply Order Export
  * Plugin URI: http://sharethingz.com/
  * Description: A WooCommerce plugin to export order related information in csv format.
  * Version: 3.0.0

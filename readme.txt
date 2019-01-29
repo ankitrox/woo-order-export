@@ -20,7 +20,8 @@ You can add more fields to export and extend the functionality by using hooks. I
 * Easy to install and setup
 * Very simplified and clean UI.
 * Exports each product in order in separate line.
-* Easily customizable
+* Easily customizable.
+* Reorder fields.
 * Exports csv file containing information of WooCommerce orders
 * Exports orders between certain duration, you can select start and end date.
 * Exports item quantity, product name along with variation details.
@@ -56,7 +57,6 @@ Activate it through the 'Plugins' section.
 
 1. WooCommerce Simply Order Export setting page.
 2. Advanced options.
-3. Usage instructions in admin help tab.
 
 == Frequently Asked Questions ==
 
