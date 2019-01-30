@@ -83,6 +83,11 @@ if(!class_exists('WOOOE_Data_Handler', false)){
                     array_push($fields, $val);
                 }
             }
+            
+            //Throw exceptions if no fields are selected to export.
+            if( empty($fields) && !$exportable_fields){
+                throw new Exception(__('No fields to export.', 'woooe'));
+            }
 
             return $fields;
         }
@@ -165,7 +170,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
             $endDate    = self::get_request_params('endDate');
 
             if( empty($startDate) || empty($endDate) ){
-                throw new WP_Error( 'empty_period', __('Enter start date and End date', 'woooe') );
+                throw new Exception( __('Enter start date and End date', 'woooe') );
             }
 
             return true;

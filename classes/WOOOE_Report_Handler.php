@@ -32,11 +32,7 @@ if( !class_exists('WOOOE_Report_Handler', false) ){
 
             }catch(Exception $e){
 
-                if(is_wp_error($e)){
-                    $msg = $e->get_error_message();
-                }else{
-                    $msg = $e->getMessage();
-                }
+                $msg = $e->getMessage();
 
                 if(wp_doing_ajax()){
                     wp_send_json_error($msg);
@@ -52,30 +48,26 @@ if( !class_exists('WOOOE_Report_Handler', false) ){
          */
         static function fetch_report_stats(){
 
-            if(WOOOE_Data_Handler::validate()){
+            try{
 
-                try{
+                if(WOOOE_Data_Handler::validate()){
 
                     if(wp_doing_ajax()){
                         self::return_report_status();
                     }elseif(wp_doing_cron()){
                         return array('success'=>true, 'data'=>self::return_report_args());
                     }
+                }
 
-                }catch(WP_Error $e){
+            }catch(Exception $e){
+                
+                $msg = $e->getMessage();
 
-                    if(is_wp_error($e)){
-                        $msg = $e->get_error_message();
-                    }else{
-                        $msg = $e->getMessage();
-                    }
-
-                    if(wp_doing_ajax()){
-                        wp_send_json_error($msg);
-                    }
-                    elseif(wp_doing_cron()){
-                        return array('success'=>false, 'data'=>$msg);
-                    }
+                if(wp_doing_ajax()){
+                    wp_send_json_error($msg);
+                }
+                elseif(wp_doing_cron()){
+                    return array('success'=>false, 'data'=>$msg);
                 }
             }
         }
@@ -88,7 +80,7 @@ if( !class_exists('WOOOE_Report_Handler', false) ){
             $query = WOOOE_Data_Handler::get_current_query();
 
             if( ! ($query instanceof WP_Query) ){
-                throw new WP_Error( 'invalid_return_query', __('Something went wrong!', 'woooe') );
+                throw new Exception(__('Something went wrong!', 'woooe'));
             }
 
             $args = array(

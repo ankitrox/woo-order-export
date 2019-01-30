@@ -57,6 +57,22 @@ $fields = apply_filters('woooe_exportable_fields', array(
         ),
 
         array(
+            'name'     => __( 'Order Currency', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_order_currency',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
+        array(
+            'name'     => __( 'Prices Include Tax (yes/no)', 'woooe' ),
+            'type'     => 'checkbox',
+            'id'       => 'woooe_field_price_include_tax',
+            'export_field' => 'yes',
+            'class' => 'WOOOE_Fetch_Order'
+        ),
+
+        array(
             'name'     => __( 'Order Total Tax', 'woooe' ),
             'type'     => 'checkbox',
             'id'       => 'woooe_field_order_total_tax',

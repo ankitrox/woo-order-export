@@ -7,3 +7,5 @@
 .woooe-cf-row {display: table-row; background: #FFF; }
     .woooe-cf-row-head {background: none;display: table-row;}
     .woooe-cf-key, .woooe-cf-name, .woooe-cf-action {display: table-cell; padding: 10px;}
+    
+#woooe-error-msg { padding: 10px; font-size: 1.1em; }

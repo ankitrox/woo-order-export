@@ -60,7 +60,8 @@ jQuery(document).ready(function(){
                 if( remaining_records <= 0 ){
                     jQuery('body').trigger('woooe_process_completed', response);
                 }
-
+            }else{
+                jQuery('body').trigger('woooe_process_completed', response);
             }
         });
     };
@@ -80,6 +81,7 @@ jQuery(document).ready(function(){
        };
        
         jQuery("#woooe-loader").show();
+        jQuery("#woooe-error-msg").removeClass('error').html('').hide();
 
         jQuery.post( ajaxurl, data, function(response){
 
@@ -87,20 +89,25 @@ jQuery(document).ready(function(){
                 if(parseInt(response.data.total_records) > 0){
                     new getReport(response.data);
                 }
+            }else{
+                //Trigger completion and display error.
+                jQuery('body').trigger('woooe_process_completed', response);
             }
         });
        
     });
-    
+
     /*
      * Event listener fires when fetching of records are done.
      */
     jQuery('body').on('woooe_process_completed', function(event, response){
-        
+
         jQuery("#woooe-loader").hide();
-        
+
         if(response.success === true){
             window.location = response.data.fileurl;
+        }else if(response.success === false){
+            jQuery("#woooe-error-msg").addClass('error').html(response.data).show();
         }
     });
 });
