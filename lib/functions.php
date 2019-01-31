@@ -127,11 +127,35 @@ if(!function_exists('woooe_format_price')){
 /*
  * Show add-on purchase notice.
  */
-
 if(!function_exists('woooe_addon_notice')){
-    
+
     function woooe_addon_notice(){
-        require trailingslashit(WOOOE_BASE). 'views/woooe-addon.php';
+        global $woooe_addon;
+        /*
+         * Show this notice if new version (3.4) of add-on plugin
+         * is not installed and older version is not activated.
+         */
+        if((!is_object($woooe_addon) || !is_a($woooe_addon, 'OE_ADDON')) && !is_plugin_active('woocommerce-simply-order-export-add-on/main.php')){
+            require trailingslashit(WOOOE_BASE). 'views/woooe-addon.php';
+        }
     }
     add_action('admin_notices', 'woooe_addon_notice');
+}
+
+/*
+ * Show notice for old add-on plugins.
+ * Ask to update to the newer version of add-on
+ */
+if(!function_exists('woooe_update_addon')){
+
+    function woooe_update_addon(){
+
+        /*
+         * Show this notice only if older version is activated.
+         */
+        if(is_plugin_active('woocommerce-simply-order-export-add-on/main.php')){
+            require trailingslashit(WOOOE_BASE). 'views/html-notice-addon-update.php';
+        }
+    }
+    add_action('admin_notices', 'woooe_update_addon');
 }

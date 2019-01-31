@@ -4,7 +4,7 @@ Donate link: http://sharethingz.com
 Tags: woocommerce, order, export, csv, duration, woocommerce-order, woocommerce-order-export
 Requires at least: 4.5.0
 Tested up to: 5.0.3
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: GPLv2 or later (of-course)
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +31,59 @@ You can add more fields to export and extend the functionality by using hooks. I
 * Very lighweight code.
 * Translation ready code.
 * Contribution in translating plugin to different languages is strongly encouraged.
+
+= Fields in free plugin =
+
+* Order ID
+* Product Name
+* Order Status
+* Order Number
+* Order Date
+* Order Total
+* Order Currency
+* Prices Include Tax (yes/no)
+* Order Total Tax
+* Order Shipping Total
+* Order Shipping Tax
+* Customer Name
+* Customer's Billing Email
+
+= Fields added by add-on plugin =
+
+* Product ID
+* Product Quantity
+* Variation Attributes
+* Product URL
+* Product Categories
+* Product SKU
+* Billing First Name
+* Billing Last Name
+* Billing Address Line 1
+* Billing Address Line 2
+* Billing City
+* Billing State
+* Billing Country
+* Billing Postcode
+* Billing Company
+* Billing Phone Number
+* Shipping First Name
+* Shipping Last Name
+* Shipping Address Line 1
+* Shipping Address Line 2
+* Shipping City
+* Shipping State
+* Shipping Country
+* Shipping Postcode
+* Payment Method
+* Payment Method Title
+* Transaction ID
+* Customer IP Address
+* Customer User Agent
+* Customer Notes
+* Coupon Codes
+* Coupon Discounts
+* Cart Discount
+* Cart Discount Tax
 
 = Features in WooCommerce Simply Order Export Add-on =
 
@@ -76,6 +129,9 @@ Please use woooe_exportable_fields hooks for performing this activity. Little Wo
 You can also opt for woocommerce simply order export add-on, it is available [here](http://sharethingz.com/woocommerce-simply-order-export-add-on/?utm_source=readme&utm_medium=plugin&utm_campaign=wsoe). It adds all the fields related to orders and allows users to reorder the fields using drag and drop interface.
 
 == Changelog ==
+
+= 3.0.3 =
+* Fixed add-on notice bug.
 
 = 3.0.2 =
 * Added order currency field.
