@@ -192,4 +192,6 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
             }
         }
     }
+    
+    return new WOOOE_Setting_Tab();
 }
