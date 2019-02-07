@@ -4,7 +4,7 @@ Donate link: http://sharethingz.com
 Tags: woocommerce, order, export, csv, duration, woocommerce-order, woocommerce-order-export
 Requires at least: 4.5.0
 Tested up to: 5.0.3
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: GPLv2 or later (of-course)
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
