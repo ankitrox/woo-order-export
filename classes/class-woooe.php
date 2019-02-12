@@ -14,7 +14,7 @@ if( !class_exists('WOOOE', false) ){
         /*
          * Version of plugin
          */
-        public $version = '3.0.6';
+        public $version = '3.0.7';
 
         /*
          * Plugin settings array

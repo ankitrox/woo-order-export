@@ -51,6 +51,17 @@ if( !class_exists('WOOOE_Report_Handler', false) ){
             try{
 
                 if(WOOOE_Data_Handler::validate()){
+                    
+                    $query = WOOOE_Data_Handler::get_current_query();
+                    
+                    //Throw error if found_posts property is not set.
+                    if(!property_exists($query, 'found_posts')){
+                        throw new Exception(__('Query does not hold found_posts property. Could not fetch records.', 'woooe'));
+                    }
+                    
+                    if(0 === $query->found_posts){
+                        throw new Exception(__('No records found to export. Please try with different date range.', 'woooe'));
+                    }
 
                     if(wp_doing_ajax()){
                         self::return_report_status();
