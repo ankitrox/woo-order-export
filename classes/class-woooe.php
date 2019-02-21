@@ -14,7 +14,7 @@ if( !class_exists('WOOOE', false) ){
         /*
          * Version of plugin
          */
-        public $version = '3.0.7';
+        public $version = '3.0.9';
 
         /*
          * Plugin settings array
@@ -64,7 +64,7 @@ if( !class_exists('WOOOE', false) ){
         function hooks(){
             add_filter( 'plugin_action_links_'.WOOOE_BASENAME, 'woooe_action_link' );
             add_action('admin_enqueue_scripts', array($this, 'scripts'));
-            add_filter('woocommerce_get_settings_pages', function($settings){ return $settings[] = include trailingslashit(WOOOE_BASE).'classes/WOOOE_Setting_Tab.php';});
+            add_filter('woocommerce_get_settings_pages', function($settings){ $settings[] = include trailingslashit(WOOOE_BASE).'classes/WOOOE_Setting_Tab.php'; return $settings;});
             add_action('wp_ajax_woooe_get_report', array('WOOOE_Report_Handler', 'fetch_report_stats') );
             add_action('wp_ajax_woooe_fetch_report', array('WOOOE_Report_Handler', 'fetch_report') );
             add_action('init', array('WOOOE_File_Handler', 'download'),11);

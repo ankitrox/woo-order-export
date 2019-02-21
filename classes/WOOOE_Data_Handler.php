@@ -79,7 +79,7 @@ if(!class_exists('WOOOE_Data_Handler', false)){
                 foreach($reorder_settings as $key=>$value){
                     $index = array_search($key, $plucked_list);
                     $val = $temp_fields[$index];
-                    $val['name'] = $value;
+                    $val['name'] = stripslashes($value);
                     array_push($fields, $val);
                 }
             }

@@ -4,7 +4,7 @@ jQuery(document).ready(function(){
      * Add datepicker to start and end date boxes.
      */
     jQuery('.woooe-datepicker').datepicker({ dateFormat : "dd-mm-yy" });
-    
+
     /*
      * Reorder element up
      */
@@ -109,5 +109,17 @@ jQuery(document).ready(function(){
         }else if(response.success === false){
             jQuery("#woooe-error-msg").addClass('error').html(response.data).show();
         }
+    });
+
+    /*
+     * Dismiss notice for 24 hours
+     */
+    jQuery('.woooe-addon.is-dismissible .notice-dismiss').on('click', function(e){
+        
+        jQuery.post(ajaxurl, {action: 'addon_notice_dismiss'}, function(response){
+            if(response.success !== true){
+                alert(response.data);
+            }
+        });
     });
 });

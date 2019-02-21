@@ -130,7 +130,7 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
 
                                 <div class="reorder-row">
                                     <div class="rename">
-                                        <input type="text" name="woooe_field_names[]" value="<?php echo $name; ?>" autocomplete="off" />
+                                        <input type="text" name="woooe_field_names[]" value="<?php echo stripslashes($name); ?>" autocomplete="off" />
                                         <input type="hidden" name="woooe_field_ids[]" value="<?php echo $id; ?>" />
                                     </div>
                                     <div class="reorder">
@@ -163,6 +163,8 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
                     $field_names    = !empty($_POST['woooe_field_names']) ? $_POST['woooe_field_names'] : array();
 
                     $reorder_settings = array_combine($field_ids, $field_names);
+                    $reorder_settings = array_map(function($element){return sanitize_text_field($element);}, $reorder_settings);
+                    
                     $update = update_option('woooe_reorder_rename', $reorder_settings, false);
                 }
                 
@@ -186,7 +188,7 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
                     foreach($to_remove as $k=>$v){
                         unset($reorder_settings[$k]);
                     }
-
+                    
                     $update = update_option('woooe_reorder_rename', $reorder_settings, false);
                 }            
             }

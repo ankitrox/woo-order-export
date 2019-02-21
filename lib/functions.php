@@ -131,12 +131,17 @@ if(!function_exists('woooe_addon_notice')){
 
     function woooe_addon_notice(){
         global $woooe_addon;
-        /*
-         * Show this notice if new version (3.4) of add-on plugin
-         * is not installed and older version is not activated.
-         */
-        if((!is_object($woooe_addon) || !is_a($woooe_addon, 'OE_ADDON')) && !is_plugin_active('woocommerce-simply-order-export-add-on/main.php')){
-            require trailingslashit(WOOOE_BASE). 'views/woooe-addon.php';
+        
+        $hide_notice = get_transient('woooe_addon_notice_hide');
+
+        if(!$hide_notice){
+            /*
+             * Show this notice if new version (3.4) of add-on plugin
+             * is not installed and older version is not activated.
+             */
+            if((!is_object($woooe_addon) || !is_a($woooe_addon, 'OE_ADDON')) && !is_plugin_active('woocommerce-simply-order-export-add-on/main.php')){
+                require trailingslashit(WOOOE_BASE). 'views/woooe-addon.php';
+            }
         }
     }
     add_action('admin_notices', 'woooe_addon_notice');
@@ -149,7 +154,6 @@ if(!function_exists('woooe_addon_notice')){
 if(!function_exists('woooe_update_addon')){
 
     function woooe_update_addon(){
-
         /*
          * Show this notice only if older version is activated.
          */
@@ -158,4 +162,22 @@ if(!function_exists('woooe_update_addon')){
         }
     }
     add_action('admin_notices', 'woooe_update_addon');
+}
+
+/*
+ * Set the transient for dismissing the notice.
+ */
+if(!function_exists('woooe_dismiss_addon_notice')){
+
+    function woooe_dismiss_addon_notice() {
+
+        $set = set_transient( 'woooe_addon_notice_hide', 1, HOUR_IN_SECONDS*24 );
+        
+        if(!$set){
+            wp_send_json_error( __('Something went wrong. Please try again.', 'woooe') );
+        }
+        
+        wp_send_json_success();
+    }
+    add_action('wp_ajax_addon_notice_dismiss', 'woooe_dismiss_addon_notice');
 }
