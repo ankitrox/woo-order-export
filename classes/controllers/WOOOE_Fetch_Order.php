@@ -30,7 +30,8 @@ if(!class_exists('WOOOE_Fetch_Order', false)){
             $this->order_total_tax = woooe_format_price($this->order->get_total_tax(), $this->order->get_currency());
             $this->order_shipping_total = woooe_format_price($this->order->get_shipping_total(), $this->order->get_currency());
             $this->order_shipping_tax = woooe_format_price($this->order->get_shipping_tax(), $this->order->get_currency());
-            $this->items = $this->order->get_items( apply_filters( 'woocommerce_admin_order_item_types', 'line_item' ) );
+            $this->items = apply_filters('woooe_items_filtering', $this->order->get_items('line_item'));
+            $this->shipping_items = $this->order->get_items( apply_filters( 'woocommerce_admin_order_item_types', 'shipping' ) );
         }
     }
 }
