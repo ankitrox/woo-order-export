@@ -3,8 +3,8 @@ Contributors: wpgurudev
 Donate link: http://sharethingz.com
 Tags: woocommerce, order, export, csv, duration, woocommerce-order, woocommerce-order-export
 Requires at least: 4.5.0
-Tested up to: 5.0.3
-Stable tag: 3.0.10
+Tested up to: 5.1.1
+Stable tag: 3.0.11
 License: GPLv2 or later (of-course)
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,7 @@ You can add more fields to export and extend the functionality by using hooks. I
 * Shipping State
 * Shipping Country
 * Shipping Postcode
+* Shipping Method
 * Payment Method
 * Payment Method Title
 * Transaction ID
@@ -129,6 +130,9 @@ Please use woooe_exportable_fields hooks for performing this activity. Little Wo
 You can also opt for woocommerce simply order export add-on, it is available [here](http://sharethingz.com/woocommerce-simply-order-export-add-on/?utm_source=readme&utm_medium=plugin&utm_campaign=wsoe). It adds all the fields related to orders and allows users to reorder the fields using drag and drop interface.
 
 == Changelog ==
+
+= 3.0.11 =
+* Fix: Redirection to dashboard when trying to download export file.
 
 = 3.0.10 =
 * Added 'woooe_items_filtering' filter to filter out items in an order based on categories and tags.

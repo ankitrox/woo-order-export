@@ -181,3 +181,111 @@ if(!function_exists('woooe_dismiss_addon_notice')){
     }
     add_action('wp_ajax_addon_notice_dismiss', 'woooe_dismiss_addon_notice');
 }
+
+/*
+ * Stores a random hash for use in openssl encrypt functions.
+ */
+if( !function_exists('woooe_set_random_hash') ){
+
+    function woooe_set_random_hash(){
+
+        $woooe_salt = wp_generate_password();
+        update_option('woooe_salt', $woooe_salt);
+        return $woooe_salt;
+    }
+}
+
+/*
+ * Retrieves random hash for use in openssl encrypt functions.
+ */
+if( !function_exists('woooe_get_random_hash') ){
+
+    function woooe_get_random_hash(){
+
+        $woooe_salt = get_option('woooe_salt');
+        
+        if(empty($woooe_salt)){
+            $woooe_salt = woooe_set_random_hash();
+        }
+        
+        return $woooe_salt;
+    }
+}
+
+/*
+ * If the page is getting redirected at downloading csv,
+ * generate a new salt and save in database
+ */
+if( !function_exists('woooe_fix_redirect') ){
+
+    function woooe_fix_redirect(){
+
+        if(!empty($_GET['woooe_fix_redirect']) && wp_verify_nonce($_GET['woooe_fix_redirect'], 'woooe_fix_redirect') ){
+            $woooe_salt = woooe_set_random_hash();
+            add_settings_error('woooe_fix', 'woooe_redirect_fix', __('Redrection issue fixed. Please try again downloading export file.'), 'updated');
+        }
+    }
+    add_action('admin_init', 'woooe_fix_redirect');
+}
+
+/*
+ * Button to fix redirection issue while downloading export file.
+ */
+if( !function_exists('woooe_fix_redirect_tool') ){
+    
+    function woooe_fix_redirect_tool(){?>
+        <div class="card">
+            <h2 class="title"><?php _e( 'WooCommerce Simply Order Export', 'woooe' ) ?></h2>
+            <?php settings_errors('woooe_fix'); ?>
+            <p><?php _e('Click this button if page getting redirect while downloading export file.', 'woooe'); ?></p>
+            <p>
+                <a class="button" href="<?php echo add_query_arg('woooe_fix_redirect', wp_create_nonce('woooe_fix_redirect') ,admin_url('tools.php')) ?>">
+                <?php_e('Fix Redirection', 'woooe');?>
+                </a>
+            </p>
+	</div><?php
+    }
+    add_action('tool_box', 'woooe_fix_redirect_tool');
+}
+
+/**
+ * Runs the script for update. If any update of the plugin has update script available,
+ * it would seek for the script and if script is available, it will run the script.
+ */
+if( !function_exists('woooe_core_run_update_scripts') ){
+
+	function woooe_core_run_update_scripts() {
+
+                global $woooe;
+
+		// Run this block if current user is woocommerce manager and is in admin/dashboard.
+		if( is_admin() && current_user_can('manage_woocommerce') ){
+
+			$db_version = get_option( 'woooe_version', '3.0.0' ); // Check what was the last version
+			$upgrade_ran = $upgrade_ran_new = get_option( 'woooe_upgrade_ran', array() );
+
+			$update_scripts = array(); // Array of version numbers for which update scripts are present.
+
+			if( version_compare( $db_version, $woooe->version, '<' ) ) {
+
+                            foreach( $update_scripts as $script ) {
+
+                                // Check if this update script has already been executed, if it is, do not execute it again.
+                                if( (version_compare( $script, $woooe->version, '<=' )) && ( !in_array( $script, $upgrade_ran ) ) ) {
+
+                                        require_once trailingslashit( WOOOE_BASE ).'lib/update/woooe-'.$script.'.php';
+                                        array_push( $upgrade_ran_new, $script );
+                                }
+                            }
+
+                            $diff = array_diff( $upgrade_ran_new, $upgrade_ran );
+
+                            if( !empty( $diff ) ){
+                                update_option( 'woooe_upgrade_ran', $upgrade_ran_new );
+                            }
+
+                            update_option( 'woooe_version', $woooe->version );
+			}
+		}
+	}
+}

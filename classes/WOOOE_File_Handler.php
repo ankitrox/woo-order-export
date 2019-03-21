@@ -146,9 +146,11 @@ if(!class_exists('WOOOE_File_Handler', false)){
          * Returns download URL for file
          */
         static function download_url(){
+            
+            $woooe_salt = woooe_get_random_hash();
 
-            if( defined('NONCE_SALT') ){
-                $enc_key = openssl_digest(NONCE_SALT, 'SHA256', TRUE);
+            if(!empty($woooe_salt)){
+                $enc_key = openssl_digest($woooe_salt, 'SHA256', TRUE);
                 $encrypted = @openssl_encrypt(WOOOE_Data_Handler::get_request_params('timestamp'), 'AES-128-CTR', $enc_key);
                 $url = add_query_arg(array( 'woooe_download'=> ($encrypted) ), admin_url());
                 
@@ -165,9 +167,10 @@ if(!class_exists('WOOOE_File_Handler', false)){
          */
         static function download(){
 
+            $woooe_salt     = woooe_get_random_hash();
             $wooe_download  = empty($_GET['woooe_download']) ? '' : ($_GET['woooe_download']);
             $wooe_delete    = empty($_GET['dnd']) ? false : true;
-            $enc_key        = openssl_digest(NONCE_SALT, 'SHA256', TRUE);
+            $enc_key        = openssl_digest($woooe_salt, 'SHA256', TRUE);
             $wooe_filename  = @openssl_decrypt($wooe_download, 'AES-128-CTR', $enc_key);
             
             if( !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))){

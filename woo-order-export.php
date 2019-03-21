@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Simply Order Export
  * Plugin URI: http://sharethingz.com/
  * Description: A WooCommerce plugin to export order related information in csv format.
- * Version: 3.0.10
+ * Version: 3.0.11
  * Author: Ankit Gade
  * Author URI: https://sharethingz.com/
  * Text Domain: woooe

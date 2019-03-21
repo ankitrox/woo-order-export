@@ -14,7 +14,7 @@ if( !class_exists('WOOOE', false) ){
         /*
          * Version of plugin
          */
-        public $version = '3.0.10';
+        public $version = '3.0.11';
 
         /*
          * Plugin settings array
@@ -84,6 +84,12 @@ if( !class_exists('WOOOE', false) ){
             }
 
             load_plugin_textdomain( 'woooe', false, basename( WOOOE_BASE ) . '/languages' );
+
+            /*
+             * If older version of add-on plugin is installed and
+             * activated, deactivate it by removing its initialization call.
+             */
+            remove_action( 'woocommerce_init', 'wsoe_add_on_initialize' );
         }
 
         /*
