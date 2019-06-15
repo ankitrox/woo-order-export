@@ -9,3 +9,5 @@
     .woooe-cf-key, .woooe-cf-name, .woooe-cf-action {display: table-cell; padding: 10px;}
     
 #woooe-error-msg { padding: 10px; font-size: 1.1em; }
+#wooe-fields-filter li { display: inline-block; }
+#wooe-fields-filter li .current { background: #0085ba; color: #FFFFFF; border: none; outline: none; transition: background 1s; }

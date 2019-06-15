@@ -20,6 +20,7 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
             add_action( 'woocommerce_sections_' . $this->id, array( $this, 'output_sections' ) );
             add_action( 'woocommerce_admin_field_export_button', array( $this, 'export_button' ) );
             add_action( 'woocommerce_admin_field_woooe_reorder', array( $this, 'woooe_reorder' ) );
+            add_action( 'woocommerce_admin_field_woooe_field_filter', array( $this, 'woooe_field_filter' ) );
             add_action( 'woocommerce_settings_saved', array( $this, 'save' ) );
         }
 
@@ -45,7 +46,7 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
             if( 'advanced' == $current_section ){
                 woocommerce_admin_fields( $woooe->get_settings('advanced') );
             }
-            
+
             do_action('woooe_settings_section');
         }
 
@@ -54,11 +55,11 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
          */
         function update_settings(){
             global $current_section, $woooe;
-            
+
             if(in_array( $current_section, array('', 'general')) ){
                 woocommerce_update_options( $woooe->get_settings('general') );
             }
-            
+
             if( 'advanced' == $current_section ){
                 woocommerce_update_options( $woooe->get_settings('advanced') );
             }
@@ -97,12 +98,12 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
 
 		echo '</ul><br class="clear" />';
 	}
-        
+
         /*
          * Renders export button
          */
         function export_button($value){?>
-            
+
             <tr valign="top">
                 <th></th>
                 <td class="forminp">
@@ -112,20 +113,20 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
                 </td>
             </tr><?php
         }
-        
+
         /*
          * Reorder/Rename fields
          */
         function woooe_reorder(){
-            
+
             $reorder_options = get_option('woooe_reorder_rename', array()); ?>
-            
+
             <tr>
                 <td style="padding-left: 0;" class="forminp" colspan="2">
                     <section class="woooe-reorder-section"><?php
-                    
+
                         if(!empty($reorder_options)){
-                
+
                             foreach($reorder_options as $id=>$name){?>
 
                                 <div class="reorder-row">
@@ -148,15 +149,39 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
             </tr><?php
         }
 
+	    /**
+         * Filter fields based on choice.
+         * Make them hide/show.
+	     */
+	    function woooe_field_filter( $args ) {
+
+	        if( empty( $args['filters'] ) || !is_array( $args['filters'] ) ){
+	            return;
+            }
+
+	        $btn_classes = 'button current field-filter';
+	        ?>
+
+            <ul id="wooe-fields-filter"><?php
+
+                foreach( $args['filters'] as $key=>$val ) {?>
+                    <li><a data-filter="<?php echo sanitize_title($val) ?>" class="<?php echo $btn_classes; ?>" href="#"><?php echo $val; ?></a></li><?php
+                    $btn_classes = str_replace( 'current ', '', $btn_classes );
+                }?>
+            </ul><?php
+
+        }
+
+
         /*
          * Save the settings
          */
         function save(){
 
             global $current_section, $current_tab, $woooe;
-            
+
             if('woooe' === $current_tab){
-            
+
                 if( ('advanced' === $current_section) ){
 
                     $field_ids      = !empty($_POST['woooe_field_ids']) ? $_POST['woooe_field_ids'] : array();
@@ -164,10 +189,10 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
 
                     $reorder_settings = array_combine($field_ids, $field_names);
                     $reorder_settings = array_map(function($element){return sanitize_text_field($element);}, $reorder_settings);
-                    
+
                     $update = update_option('woooe_reorder_rename', $reorder_settings, false);
                 }
-                
+
                 //General section can be empty as well for `woooe` page.
                 if( empty($current_section) || ('general' === $current_section) ){
 
@@ -188,12 +213,12 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
                     foreach($to_remove as $k=>$v){
                         unset($reorder_settings[$k]);
                     }
-                    
+
                     $update = update_option('woooe_reorder_rename', $reorder_settings, false);
-                }            
+                }
             }
         }
     }
-    
+
     return new WOOOE_Setting_Tab();
 }

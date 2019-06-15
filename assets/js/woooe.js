@@ -111,7 +111,7 @@ jQuery(document).ready(function(){
         }
     });
 
-    /*
+    /**
      * Dismiss notice for 24 hours
      */
     jQuery('.woooe-addon.is-dismissible .notice-dismiss').on('click', function(e){
@@ -120,6 +120,31 @@ jQuery(document).ready(function(){
             if(response.success !== true){
                 alert(response.data);
             }
+        });
+    });
+
+  /**
+   * Field filter UI.
+   */
+  jQuery("#wooe-fields-filter .button").on('click', function(e){
+
+        e.preventDefault();
+
+        var target = jQuery(this), current = jQuery("#wooe-fields-filter .current"), filter = target.data('filter');
+        current.removeClass('current');
+        target.addClass('current');
+        filter = ( 'all-fields' === filter ) ? 'woooe-field' : filter;
+
+        //Itrate through each field
+        jQuery('.woooe-field').each(function(){
+
+          jQuery(this).parents('tr').show();
+
+          //Hide rows do not matching criteria.
+          if( !jQuery(this).hasClass( filter ) ){
+            jQuery(this).parents('tr').hide();
+          }
+
         });
     });
 });

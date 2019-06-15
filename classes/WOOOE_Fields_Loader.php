@@ -80,10 +80,10 @@ if(!class_exists('WOOOE_Fields_Loader', false)){
                 foreach($this->fields as $field){
 
                     //Check if it has class
-                    if( isset($field['class']) ){
+                    if( isset($field['classname']) ){
                         
                         $field_name = str_replace('woooe_field_', '', $field['id']);
-                        $class = $field['class'];
+                        $class = $field['classname'];
                         $instance = $class::instance(self::$track);
                         $row[$field['id']] = $instance->get_value($field_name);
                     }

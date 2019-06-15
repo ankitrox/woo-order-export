@@ -240,7 +240,7 @@ if( !function_exists('woooe_fix_redirect_tool') ){
             <p><?php _e('Click this button if page getting redirect while downloading export file.', 'woooe'); ?></p>
             <p>
                 <a class="button" href="<?php echo add_query_arg('woooe_fix_redirect', wp_create_nonce('woooe_fix_redirect') ,admin_url('tools.php')) ?>">
-                <?php_e('Fix Redirection', 'woooe');?>
+                <?php _e('Fix Redirection', 'woooe');?>
                 </a>
             </p>
 	</div><?php
