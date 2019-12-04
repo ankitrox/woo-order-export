@@ -12,7 +12,10 @@ $filename_section = array(
 	array(
 		'name' => __( 'File Name', 'woooe' ),
 		'type' => 'text',
-		'id'   => 'woooe_field_export_filename'
+		'id'   => 'woooe_field_export_filename',
+		'custom_attributes' => [
+			'autocomplete' => 'off'
+		]
 	),
 
 	array(

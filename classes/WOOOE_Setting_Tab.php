@@ -76,43 +76,49 @@ if( !class_exists('WOOE_Setting_Tab', false) ){
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
 	}
 
-	/**
-	 * Output sections.
-	 */
-	public function output_sections() {
-		global $current_section;
+	    /**
+	     * Output sections.
+	     */
+	    public function output_sections() {
+		    global $current_section;
 
-		$sections = $this->get_sections();
+		    $current_section = empty( $current_section ) ? 'general' : $current_section;
+		    $sections        = $this->get_sections();
 
-		if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
-			return;
-		}
+		    if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+			    return;
+		    }
 
-		echo '<ul class="subsubsub">';
+		    echo '<ul class="subsubsub">';
 
-		$array_keys = array_keys( $sections );
+		    $array_keys = array_keys( $sections );
 
-		foreach ( $sections as $id => $label ) {
-			echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
-		}
+		    foreach ( $sections as $id => $label ) {
+			    echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+		    }
 
-		echo '</ul><br class="clear" />';
-	}
+		    echo '</ul><br class="clear" />';
+	    }
 
-        /*
-         * Renders export button
-         */
-        function export_button($value){?>
+	    /*
+		 * Renders export button
+		 */
+	    function export_button( $value ) {
+		    ?>
 
             <tr valign="top">
-                <th></th>
-                <td class="forminp">
-                    <input class="button btn" id="<?php echo $value['id']; ?>" type="button" value="<?php echo $value['name']; ?>" />
-                    <div id="woooe-error-msg"></div>
-                    <div id="woooe-loader" style="margin-top: 10px; display: none;"><img src="<?php echo WOOOE_BASE_URL.'/assets/img/ajaxloader.gif' ?>" alt="<?php _e('Please wait...', 'woooe') ?>" /></div>
-                </td>
+            <th></th>
+            <td class="forminp">
+                <input class="button btn" id="<?php echo $value['id']; ?>" type="button"
+                       value="<?php echo $value['name']; ?>"/>
+                <div id="woooe-error-msg"></div>
+                <div id="woooe-loader" style="margin-top: 10px; display: none;">
+                    <img src="<?php echo WOOOE_BASE_URL . '/assets/img/ajaxloader.gif' ?>" style="vertical-align: middle;" alt="<?php _e( 'Please wait...', 'woooe' ) ?>"/>
+                    <span><?php _e( 'Please do not refresh or close this page.', 'woooe' ); ?></span>
+                </div>
+            </td>
             </tr><?php
-        }
+	    }
 
         /*
          * Reorder/Rename fields

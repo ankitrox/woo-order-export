@@ -124,8 +124,8 @@ if(!function_exists('woooe_format_price')){
     }
 }
 
-/*
- * Show add-on purchase notice.
+/**
+ * Display add-on purchase notice.
  */
 if(!function_exists('woooe_addon_notice')){
 
@@ -147,9 +147,9 @@ if(!function_exists('woooe_addon_notice')){
     add_action('admin_notices', 'woooe_addon_notice');
 }
 
-/*
+/**
  * Show notice for old add-on plugins.
- * Ask to update to the newer version of add-on
+ * Ask to update to the newer version of add-on.
  */
 if(!function_exists('woooe_update_addon')){
 
@@ -164,55 +164,57 @@ if(!function_exists('woooe_update_addon')){
     add_action('admin_notices', 'woooe_update_addon');
 }
 
-/*
+/**
  * Set the transient for dismissing the notice.
  */
-if(!function_exists('woooe_dismiss_addon_notice')){
+if ( ! function_exists( 'woooe_dismiss_addon_notice' ) ) {
 
-    function woooe_dismiss_addon_notice() {
+	function woooe_dismiss_addon_notice() {
 
-        $set = set_transient( 'woooe_addon_notice_hide', 1, HOUR_IN_SECONDS*24 );
-        
-        if(!$set){
-            wp_send_json_error( __('Something went wrong. Please try again.', 'woooe') );
-        }
-        
-        wp_send_json_success();
-    }
-    add_action('wp_ajax_addon_notice_dismiss', 'woooe_dismiss_addon_notice');
+		$set = set_transient( 'woooe_addon_notice_hide', 1, HOUR_IN_SECONDS * 24 );
+
+		if ( ! $set ) {
+			wp_send_json_error( __( 'Something went wrong. Please try again.', 'woooe' ) );
+		}
+
+		wp_send_json_success();
+	}
+
+	add_action( 'wp_ajax_addon_notice_dismiss', 'woooe_dismiss_addon_notice' );
 }
 
-/*
+/**
  * Stores a random hash for use in openssl encrypt functions.
  */
-if( !function_exists('woooe_set_random_hash') ){
+if ( ! function_exists( 'woooe_set_random_hash' ) ) {
 
-    function woooe_set_random_hash(){
+	function woooe_set_random_hash() {
 
-        $woooe_salt = wp_generate_password();
-        update_option('woooe_salt', $woooe_salt);
-        return $woooe_salt;
-    }
+		$woooe_salt = wp_generate_password();
+		update_option( 'woooe_salt', $woooe_salt );
+
+		return $woooe_salt;
+	}
 }
 
-/*
+/**
  * Retrieves random hash for use in openssl encrypt functions.
  */
-if( !function_exists('woooe_get_random_hash') ){
+if ( ! function_exists( 'woooe_get_random_hash' ) ) {
 
-    function woooe_get_random_hash(){
+	function woooe_get_random_hash() {
 
-        $woooe_salt = get_option('woooe_salt');
-        
-        if(empty($woooe_salt)){
-            $woooe_salt = woooe_set_random_hash();
-        }
-        
-        return $woooe_salt;
-    }
+		$woooe_salt = get_option( 'woooe_salt' );
+
+		if ( empty( $woooe_salt ) ) {
+			$woooe_salt = woooe_set_random_hash();
+		}
+
+		return $woooe_salt;
+	}
 }
 
-/*
+/**
  * If the page is getting redirected at downloading csv,
  * generate a new salt and save in database
  */

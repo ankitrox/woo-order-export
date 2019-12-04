@@ -165,36 +165,36 @@ if(!class_exists('WOOOE_File_Handler', false)){
         /*
          * Download the csv file.
          */
-        static function download(){
+	    static function download() {
 
-            $woooe_salt     = woooe_get_random_hash();
-            $wooe_download  = empty($_GET['woooe_download']) ? '' : ($_GET['woooe_download']);
-            $wooe_delete    = empty($_GET['dnd']) ? false : true;
-            $enc_key        = openssl_digest($woooe_salt, 'SHA256', TRUE);
-            $wooe_filename  = @openssl_decrypt($wooe_download, 'AES-128-CTR', $enc_key);
-            
-            if( !empty($wooe_download) && file_exists(path_join( self::upload_dir(), $wooe_filename.'.csv'))){
+		    $woooe_salt    = woooe_get_random_hash();
+		    $wooe_download = empty( $_GET['woooe_download'] ) ? '' : ( $_GET['woooe_download'] );
+		    $wooe_delete   = empty( $_GET['dnd'] ) ? false : true;
+		    $enc_key       = openssl_digest( $woooe_salt, 'SHA256', true );
+		    $wooe_filename = @openssl_decrypt( $wooe_download, 'AES-128-CTR', $enc_key );
 
-                $charset    =   get_option('blog_charset');
-                $csv_file   =   path_join( self::upload_dir(), $wooe_filename.'.csv');
+		    if ( ! empty( $wooe_download ) && file_exists( path_join( self::upload_dir(), $wooe_filename . '.csv' ) ) ) {
 
-                header('Content-Description: File Transfer');
-                header('Content-Type: application/csv');
-                header("Content-Disposition: attachment; filename=". self::filename());
-                header("Expires: 0");
-                header('Cache-Control: must-revalidate');
-                header('Content-Encoding: '. $charset);
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($csv_file));
-                readfile($csv_file);
+			    $charset  = get_option( 'blog_charset' );
+			    $csv_file = path_join( self::upload_dir(), $wooe_filename . '.csv' );
 
-                //Do not delete if request is set.
-                if(!$wooe_delete){
-                    unlink($csv_file);
-                }
+			    header( 'Content-Description: File Transfer' );
+			    header( 'Content-Type: application/csv' );
+			    header( "Content-Disposition: attachment; filename=" . self::filename() );
+			    header( "Expires: 0" );
+			    header( 'Cache-Control: must-revalidate' );
+			    header( 'Content-Encoding: ' . $charset );
+			    header( 'Pragma: public' );
+			    header( 'Content-Length: ' . filesize( $csv_file ) );
+			    readfile( $csv_file );
 
-                exit;
-            }
-        }
+			    //Do not delete if request is set.
+			    if ( ! $wooe_delete ) {
+				    unlink( $csv_file );
+			    }
+
+			    exit;
+		    }
+	    }
     }
 }

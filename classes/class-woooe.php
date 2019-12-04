@@ -1,5 +1,5 @@
 <?php
-//prevent direct access of file.
+//Prevent direct access of file.
 
 if( !defined('ABSPATH') ){
     exit;
@@ -14,7 +14,7 @@ if( !class_exists('WOOOE', false) ){
         /*
          * Version of plugin
          */
-        public $version = '3.0.12';
+        public $version = '3.0.13';
 
         /*
          * Plugin settings array
